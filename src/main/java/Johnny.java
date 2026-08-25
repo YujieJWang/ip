@@ -15,6 +15,12 @@ public class Johnny {
         System.out.println("     " + message);
     }
 
+    private static void printTaskAdded(Task task, int taskCount) {
+        printIndented("Got it. I've added this task:");
+        printIndented("  " + task);
+        printIndented("Now you have " + taskCount + " tasks in the list.");
+    }
+
     public static void main(String[] args) {
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         Task[] tasks = new Task[100];
@@ -48,21 +54,17 @@ public class Johnny {
                 printIndented("  " + tasks[index]);
             } else if (input.startsWith("todo ")) {
                 String desc = input.substring(5);
-                tasks[taskCount] = new Task(desc);
+                tasks[taskCount] = new Todo(desc);
                 taskCount++;
-                printIndented("Got it. I've added this task:");
-                printIndented("  " + tasks[taskCount - 1]);
-                printIndented("Now you have " + taskCount + " tasks in the list.");
+                printTaskAdded(tasks[taskCount - 1], taskCount);
             } else if (input.startsWith("deadline ")) {
                 String rest = input.substring(9);
                 int byIndex = rest.indexOf(" /by ");
                 String desc = rest.substring(0, byIndex);
                 String by = rest.substring(byIndex + 5);
-                tasks[taskCount] = new Task(desc, by);
+                tasks[taskCount] = new Deadline(desc, by);
                 taskCount++;
-                printIndented("Got it. I've added this task:");
-                printIndented("  " + tasks[taskCount - 1]);
-                printIndented("Now you have " + taskCount + " tasks in the list.");
+                printTaskAdded(tasks[taskCount - 1], taskCount);
             } else if (input.startsWith("event ")) {
                 String rest = input.substring(6);
                 int fromIndex = rest.indexOf(" /from ");
@@ -70,13 +72,11 @@ public class Johnny {
                 String desc = rest.substring(0, fromIndex);
                 String from = rest.substring(fromIndex + 7, toIndex);
                 String to = rest.substring(toIndex + 5);
-                tasks[taskCount] = new Task(desc, from, to);
+                tasks[taskCount] = new Event(desc, from, to);
                 taskCount++;
-                printIndented("Got it. I've added this task:");
-                printIndented("  " + tasks[taskCount - 1]);
-                printIndented("Now you have " + taskCount + " tasks in the list.");
+                printTaskAdded(tasks[taskCount - 1], taskCount);
             } else {
-                tasks[taskCount] = new Task(input);
+                tasks[taskCount] = new Todo(input);
                 taskCount++;
                 printIndented("added: " + input);
             }
