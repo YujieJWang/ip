@@ -46,6 +46,35 @@ public class Johnny {
                 tasks[index].markAsNotDone();
                 printIndented("OK, I've marked this task as not done yet:");
                 printIndented("  " + tasks[index]);
+            } else if (input.startsWith("todo ")) {
+                String desc = input.substring(5);
+                tasks[taskCount] = new Task(desc);
+                taskCount++;
+                printIndented("Got it. I've added this task:");
+                printIndented("  " + tasks[taskCount - 1]);
+                printIndented("Now you have " + taskCount + " tasks in the list.");
+            } else if (input.startsWith("deadline ")) {
+                String rest = input.substring(9);
+                int byIndex = rest.indexOf(" /by ");
+                String desc = rest.substring(0, byIndex);
+                String by = rest.substring(byIndex + 5);
+                tasks[taskCount] = new Task(desc, by);
+                taskCount++;
+                printIndented("Got it. I've added this task:");
+                printIndented("  " + tasks[taskCount - 1]);
+                printIndented("Now you have " + taskCount + " tasks in the list.");
+            } else if (input.startsWith("event ")) {
+                String rest = input.substring(6);
+                int fromIndex = rest.indexOf(" /from ");
+                int toIndex = rest.indexOf(" /to ");
+                String desc = rest.substring(0, fromIndex);
+                String from = rest.substring(fromIndex + 7, toIndex);
+                String to = rest.substring(toIndex + 5);
+                tasks[taskCount] = new Task(desc, from, to);
+                taskCount++;
+                printIndented("Got it. I've added this task:");
+                printIndented("  " + tasks[taskCount - 1]);
+                printIndented("Now you have " + taskCount + " tasks in the list.");
             } else {
                 tasks[taskCount] = new Task(input);
                 taskCount++;
