@@ -36,13 +36,13 @@ bye
 
 ---
 
-### Test: Add and list tasks
+### Test: Add todo and list
 
-**Aim:** Verify plain text input is added as a todo and listed with [T] prefix.
+**Aim:** Verify todo tasks can be added and listed.
 
 **Inputs:**
 ```
-read book
+todo read book
 list
 bye
 ```
@@ -60,7 +60,9 @@ bye
      What can I do for you?
     ____________________________________________________________
     ____________________________________________________________
-     added: read book
+     Got it. I've added this task:
+       [T][ ] read book
+     Now you have 1 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
      Here are the tasks in your list:
@@ -79,7 +81,7 @@ bye
 
 **Inputs:**
 ```
-read book
+todo read book
 mark 1
 list
 bye
@@ -98,7 +100,9 @@ bye
      What can I do for you?
     ____________________________________________________________
     ____________________________________________________________
-     added: read book
+     Got it. I've added this task:
+       [T][ ] read book
+     Now you have 1 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
      Nice! I've marked this task as done:
@@ -121,7 +125,7 @@ bye
 
 **Inputs:**
 ```
-read book
+todo read book
 mark 1
 unmark 1
 list
@@ -141,7 +145,9 @@ bye
      What can I do for you?
     ____________________________________________________________
     ____________________________________________________________
-     added: read book
+     Got it. I've added this task:
+       [T][ ] read book
+     Now you have 1 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
      Nice! I've marked this task as done:
@@ -162,13 +168,15 @@ bye
 
 ---
 
-### Test: Add todo
+### Test: Add todo, deadline, and event
 
-**Aim:** Verify `todo` command creates a [T] task with confirmation message.
+**Aim:** Verify all three task types can be added.
 
 **Inputs:**
 ```
 todo borrow book
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
 list
 bye
 ```
@@ -191,86 +199,84 @@ bye
      Now you have 1 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
-     1.[T][ ] borrow book
-    ____________________________________________________________
-    ____________________________________________________________
-     Bye bye! See you again soon.
-    ____________________________________________________________
-```
-
----
-
-### Test: Add deadline
-
-**Aim:** Verify `deadline` command creates a [D] task with a /by field.
-
-**Inputs:**
-```
-deadline return book /by Sunday
-list
-bye
-```
-
-**Expected output:**
-```
-    ____________________________________________________________
-     _       _                       
-    | | ___ | |__  _ __  _ __  _   _ 
- _  | |/ _ \| '_ \| '_ \| '_ \| | | |
-| |_| | (_) | | | | | | | | | | |_| |
- \___/ \___/|_| |_|_| |_|_| |_|\__, |
-                                |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
-    ____________________________________________________________
-    ____________________________________________________________
      Got it. I've added this task:
        [D][ ] return book (by: Sunday)
-     Now you have 1 tasks in the list.
-    ____________________________________________________________
-    ____________________________________________________________
-     Here are the tasks in your list:
-     1.[D][ ] return book (by: Sunday)
-    ____________________________________________________________
-    ____________________________________________________________
-     Bye bye! See you again soon.
-    ____________________________________________________________
-```
-
----
-
-### Test: Add event
-
-**Aim:** Verify `event` command creates an [E] task with /from and /to fields.
-
-**Inputs:**
-```
-event project meeting /from Mon 2pm /to 4pm
-list
-bye
-```
-
-**Expected output:**
-```
-    ____________________________________________________________
-     _       _                       
-    | | ___ | |__  _ __  _ __  _   _ 
- _  | |/ _ \| '_ \| '_ \| '_ \| | | |
-| |_| | (_) | | | | | | | | | | |_| |
- \___/ \___/|_| |_|_| |_|_| |_|\__, |
-                                |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Now you have 2 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
      Got it. I've added this task:
        [E][ ] project meeting (from: Mon 2pm to: 4pm)
-     Now you have 1 tasks in the list.
+     Now you have 3 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
      Here are the tasks in your list:
-     1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+     1.[T][ ] borrow book
+     2.[D][ ] return book (by: Sunday)
+     3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - empty todo
+
+**Aim:** Verify error when todo description is empty.
+
+**Inputs:**
+```
+todo
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! The description of a todo cannot be empty.
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - unrecognized command
+
+**Aim:** Verify error for unknown commands.
+
+**Inputs:**
+```
+blah
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! I'm sorry, but I don't know what that means :-(
     ____________________________________________________________
     ____________________________________________________________
      Bye bye! See you again soon.
