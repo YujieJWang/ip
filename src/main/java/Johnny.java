@@ -18,6 +18,7 @@ public class Johnny {
     public static void main(String[] args) {
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         String[] tasks = new String[100];
+        boolean[] isDone = new boolean[100];
         int taskCount = 0;
 
         printLine();
@@ -32,9 +33,16 @@ public class Johnny {
             if (input.equals("bye")) {
                 printIndented("Bye bye! See you again soon.");
             } else if (input.equals("list")) {
+                printIndented("Here are the tasks in your list:");
                 for (int i = 0; i < taskCount; i++) {
-                    printIndented((i + 1) + ". " + tasks[i]);
+                    String status = isDone[i] ? "X" : " ";
+                    printIndented((i + 1) + ".[" + status + "] " + tasks[i]);
                 }
+            } else if (input.startsWith("mark ")) {
+                int index = Integer.parseInt(input.substring(5)) - 1;
+                isDone[index] = true;
+                printIndented("Nice! I've marked this task as done:");
+                printIndented("  [X] " + tasks[index]);
             } else {
                 tasks[taskCount] = input;
                 taskCount++;
