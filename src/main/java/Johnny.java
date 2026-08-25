@@ -7,13 +7,37 @@ public class Johnny {
             + " \\___/ \\___/|_| |_|_| |_|_| |_|\\__, |\n"
             + "                                |___/ \n";
 
+    private static void printLine() {
+        System.out.println("    " + LINE);
+    }
+
+    private static void printIndented(String message) {
+        System.out.println("     " + message);
+    }
+
     public static void main(String[] args) {
-        System.out.println(LINE);
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+
+        printLine();
         System.out.print(BANNER);
-        System.out.println("Hello! I'm Johnny.");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE);
-        System.out.println("Bye bye! See you again soon.");
-        System.out.println(LINE);
+        printIndented("Hello! I'm Johnny.");
+        printIndented("What can I do for you?");
+        printLine();
+
+        while (true) {
+            String input = scanner.nextLine();
+            printLine();
+            if (input.equals("bye")) {
+                printIndented("Bye bye! See you again soon.");
+            } else {
+                printIndented(input);
+            }
+            printLine();
+            if (input.equals("bye")) {
+                break;
+            }
+        }
+
+        scanner.close();
     }
 }
