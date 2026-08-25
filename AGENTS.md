@@ -22,6 +22,13 @@ Unless the user says otherwise, assume that you are assisting a student working 
   * Make generated code as self-explanatory as possible, and include explanatory comments where they improve understanding.
   * When faced with a design choice, choose the simplest option that is sufficient for the requirements, while briefly explaining relevant more advanced alternatives.
 
+# Post-code-update workflow
+
+After every code update:
+
+1. **Update test plan**: If the change affects user-visible behaviour, update `test/ui-test-plan.md` to reflect the new or modified functionality (add, modify, or remove test cases as needed).
+2. **Run UI tests**: Invoke the `test-ui` skill to verify all test cases pass. Do not report the change as complete until tests pass.
+
 # Project-specific requirements
 
 ## Java version:
