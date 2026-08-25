@@ -43,6 +43,11 @@ public class Johnny {
                 isDone[index] = true;
                 printIndented("Nice! I've marked this task as done:");
                 printIndented("  [X] " + tasks[index]);
+            } else if (input.startsWith("unmark ")) {
+                int index = Integer.parseInt(input.substring(7)) - 1;
+                isDone[index] = false;
+                printIndented("OK, I've marked this task as not done yet:");
+                printIndented("  [ ] " + tasks[index]);
             } else {
                 tasks[taskCount] = input;
                 taskCount++;
