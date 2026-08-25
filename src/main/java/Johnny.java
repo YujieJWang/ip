@@ -17,6 +17,8 @@ public class Johnny {
 
     public static void main(String[] args) {
         java.util.Scanner scanner = new java.util.Scanner(System.in);
+        String[] tasks = new String[100];
+        int taskCount = 0;
 
         printLine();
         System.out.print(BANNER);
@@ -29,8 +31,14 @@ public class Johnny {
             printLine();
             if (input.equals("bye")) {
                 printIndented("Bye bye! See you again soon.");
+            } else if (input.equals("list")) {
+                for (int i = 0; i < taskCount; i++) {
+                    printIndented((i + 1) + ". " + tasks[i]);
+                }
             } else {
-                printIndented(input);
+                tasks[taskCount] = input;
+                taskCount++;
+                printIndented("added: " + input);
             }
             printLine();
             if (input.equals("bye")) {
