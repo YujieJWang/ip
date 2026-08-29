@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,9 +25,18 @@ public class Johnny {
         printIndented("Now you have " + taskCount + " tasks in the list.");
     }
 
+    private static void saveTasks(Storage storage, ArrayList<Task> tasks) {
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            printIndented("Warning: Could not save tasks to disk.");
+        }
+    }
+
     public static void main(String[] args) {
-        java.util.Scanner scanner = new Scanner(System.in);
-        java.util.ArrayList<Task> tasks = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Task> tasks = new ArrayList<>();
+        Storage storage = new Storage("./data/johnny.txt");
 
         printLine();
         System.out.print(BANNER);
@@ -62,12 +72,14 @@ public class Johnny {
                     tasks.get(markIndex).markAsDone();
                     printIndented("Nice! I've marked this task as done:");
                     printIndented("  " + tasks.get(markIndex));
+                    saveTasks(storage, tasks);
                     break;
                 case UNMARK:
                     int unmarkIndex = Integer.parseInt(arguments) - 1;
                     tasks.get(unmarkIndex).markAsNotDone();
                     printIndented("OK, I've marked this task as not done yet:");
                     printIndented("  " + tasks.get(unmarkIndex));
+                    saveTasks(storage, tasks);
                     break;
                 case DELETE:
                     int deleteIndex = Integer.parseInt(arguments) - 1;
@@ -75,6 +87,7 @@ public class Johnny {
                     printIndented("Noted. I've removed this task:");
                     printIndented("  " + removed);
                     printIndented("Now you have " + tasks.size() + " tasks in the list.");
+                    saveTasks(storage, tasks);
                     break;
                 case TODO:
                     if (arguments.trim().isEmpty()) {
@@ -82,6 +95,7 @@ public class Johnny {
                     }
                     tasks.add(new Todo(arguments));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    saveTasks(storage, tasks);
                     break;
                 case DEADLINE:
                     int byIndex = arguments.indexOf(" /by ");
@@ -89,6 +103,7 @@ public class Johnny {
                     String by = arguments.substring(byIndex + 5);
                     tasks.add(new Deadline(deadlineDesc, by));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    saveTasks(storage, tasks);
                     break;
                 case EVENT:
                     int fromIndex = arguments.indexOf(" /from ");
@@ -98,6 +113,7 @@ public class Johnny {
                     String to = arguments.substring(toIndex + 5);
                     tasks.add(new Event(eventDesc, from, to));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    saveTasks(storage, tasks);
                     break;
                 case UNKNOWN:
                     throw new JohnnyException("I'm sorry, but I'm not too sure what that means :(");

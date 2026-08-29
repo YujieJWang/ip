@@ -23,6 +23,14 @@ public class Task {
         this.isDone = false;
     }
 
+    /**
+     * Returns a pipe-delimited string for saving this task to a file.
+     * Subclasses override this to include their specific fields.
+     */
+    public String toFileString() {
+        return (isDone ? "1" : "0") + " | " + description;
+    }
+
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
