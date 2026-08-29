@@ -29,28 +29,36 @@ public class Storage {
         }
         List<String> lines = Files.readAllLines(filePath);
         for (String line : lines) {
-            String[] parts = line.split(" \\| ");
-            String type = parts[0];
-            boolean isDone = parts[1].equals("1");
-            String description = parts[2];
-            Task task;
-            switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                task = new Deadline(description, parts[3]);
-                break;
-            case "E":
-                task = new Event(description, parts[3], parts[4]);
-                break;
-            default:
+            if (line.trim().isEmpty()) {
                 continue;
             }
-            if (isDone) {
-                task.markAsDone();
+            String[] parts = line.split(" \\| ");
+            try {
+                String type = parts[0];
+                boolean isDone = parts[1].equals("1");
+                String description = parts[2];
+                Task task;
+                switch (type) {
+                case "T":
+                    task = new Todo(description);
+                    break;
+                case "D":
+                    task = new Deadline(description, parts[3]);
+                    break;
+                case "E":
+                    task = new Event(description, parts[3], parts[4]);
+                    break;
+                default:
+                    continue;
+                }
+                if (isDone) {
+                    task.markAsDone();
+                }
+                tasks.add(task);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                // Skip corrupted lines that don't have enough fields
+                continue;
             }
-            tasks.add(task);
         }
         return tasks;
     }
@@ -60,10 +68,10 @@ public class Storage {
      */
     public void save(ArrayList<Task> tasks) throws IOException {
         Files.createDirectories(filePath.getParent());
-        FileWriter fw = new FileWriter(filePath.toFile());
-        for (Task task : tasks) {
-            fw.write(task.toFileString() + System.lineSeparator());
+        try (FileWriter fw = new FileWriter(filePath.toFile())) {
+            for (Task task : tasks) {
+                fw.write(task.toFileString() + System.lineSeparator());
+            }
         }
-        fw.close();
     }
 }

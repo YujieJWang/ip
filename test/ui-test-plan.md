@@ -336,6 +336,214 @@ bye
 
 ---
 
+### Test: Error - mark without number
+
+**Aim:** Verify error when mark is called with no argument.
+
+**Inputs:**
+```
+mark
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! Please provide a task number.
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - mark with non-numeric argument
+
+**Aim:** Verify error when mark is called with a non-numeric argument.
+
+**Inputs:**
+```
+mark abc
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! 'abc' is not a valid task number.
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - mark with out-of-range index
+
+**Aim:** Verify error when mark is called with an index beyond the list size.
+
+**Inputs:**
+```
+todo read book
+mark 5
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     Got it. I've added this task:
+       [T][ ] read book
+     Now you have 1 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! Task number 5 is out of range. You have 1 tasks.
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - deadline without /by
+
+**Aim:** Verify error when deadline is missing the /by delimiter.
+
+**Inputs:**
+```
+deadline homework
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! Invalid deadline format. Use: deadline <description> /by <date>
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - event without /from and /to
+
+**Aim:** Verify error when event is missing the /from and /to delimiters.
+
+**Inputs:**
+```
+event meeting
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! Invalid event format. Use: event <description> /from <start> /to <end>
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Corrupted save file skips bad lines
+
+**Aim:** Verify that corrupted lines in the save file are skipped gracefully.
+
+**Setup:**
+Create `./data/johnny.txt` with the following content before running:
+```
+T | 1 | read book
+badline
+D | 0 | homework | Monday
+```
+
+**Inputs:**
+```
+list
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     Here are the tasks in your list:
+     1.[T][X] read book
+     2.[D][ ] homework (by: Monday)
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
 ### Test: Load saved tasks on startup
 
 **Aim:** Verify tasks saved from a previous session are loaded when the app starts.
