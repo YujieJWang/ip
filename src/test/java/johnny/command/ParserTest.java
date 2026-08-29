@@ -16,13 +16,53 @@ public class ParserTest {
     // --- parseCommand ---
 
     @Test
-    public void parseCommand_validCommand_correctEnum() {
+    public void parseCommand_todo_correctEnum() {
         assertEquals(Command.TODO, Parser.parseCommand("todo read book"));
+    }
+
+    @Test
+    public void parseCommand_bye_correctEnum() {
+        assertEquals(Command.BYE, Parser.parseCommand("bye"));
+    }
+
+    @Test
+    public void parseCommand_list_correctEnum() {
+        assertEquals(Command.LIST, Parser.parseCommand("list"));
+    }
+
+    @Test
+    public void parseCommand_mark_correctEnum() {
+        assertEquals(Command.MARK, Parser.parseCommand("mark 1"));
+    }
+
+    @Test
+    public void parseCommand_unmark_correctEnum() {
+        assertEquals(Command.UNMARK, Parser.parseCommand("unmark 1"));
+    }
+
+    @Test
+    public void parseCommand_delete_correctEnum() {
+        assertEquals(Command.DELETE, Parser.parseCommand("delete 1"));
+    }
+
+    @Test
+    public void parseCommand_deadline_correctEnum() {
+        assertEquals(Command.DEADLINE, Parser.parseCommand("deadline homework /by 2024-01-01"));
+    }
+
+    @Test
+    public void parseCommand_event_correctEnum() {
+        assertEquals(Command.EVENT, Parser.parseCommand("event meeting /from 2024-01-01 /to 2024-01-02"));
     }
 
     @Test
     public void parseCommand_caseInsensitive_correctEnum() {
         assertEquals(Command.TODO, Parser.parseCommand("ToDo read book"));
+    }
+
+    @Test
+    public void parseCommand_allUpperCase_correctEnum() {
+        assertEquals(Command.LIST, Parser.parseCommand("LIST"));
     }
 
     @Test
@@ -47,6 +87,11 @@ public class ParserTest {
         assertEquals("", Parser.parseArguments("list"));
     }
 
+    @Test
+    public void parseArguments_preservesInternalSpaces_returnsFullArgument() {
+        assertEquals("read   many   books", Parser.parseArguments("todo read   many   books"));
+    }
+
     // --- parseTaskIndex ---
 
     @Test
@@ -55,18 +100,41 @@ public class ParserTest {
     }
 
     @Test
+    public void parseTaskIndex_firstIndex_returnsZero() throws JohnnyException {
+        assertEquals(0, Parser.parseTaskIndex("1", 3));
+    }
+
+    @Test
+    public void parseTaskIndex_lastIndex_returnsLastZeroBased() throws JohnnyException {
+        assertEquals(2, Parser.parseTaskIndex("3", 3));
+    }
+
+    @Test
     public void parseTaskIndex_emptyArguments_throwsException() {
-        assertThrows(JohnnyException.class, () -> Parser.parseTaskIndex("", 3));
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseTaskIndex("", 3));
+        assertTrue(e.getMessage().contains("provide a task number"));
+    }
+
+    @Test
+    public void parseTaskIndex_whitespaceOnly_throwsException() {
+        assertThrows(JohnnyException.class, () -> Parser.parseTaskIndex("   ", 3));
     }
 
     @Test
     public void parseTaskIndex_nonNumeric_throwsException() {
-        assertThrows(JohnnyException.class, () -> Parser.parseTaskIndex("abc", 3));
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseTaskIndex("abc", 3));
+        assertTrue(e.getMessage().contains("abc"));
+        assertTrue(e.getMessage().contains("not a valid task number"));
     }
 
     @Test
     public void parseTaskIndex_outOfRangeHigh_throwsException() {
-        assertThrows(JohnnyException.class, () -> Parser.parseTaskIndex("5", 3));
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseTaskIndex("5", 3));
+        assertTrue(e.getMessage().contains("out of range"));
+        assertTrue(e.getMessage().contains("3 tasks"));
     }
 
     @Test
@@ -74,12 +142,34 @@ public class ParserTest {
         assertThrows(JohnnyException.class, () -> Parser.parseTaskIndex("0", 3));
     }
 
+    @Test
+    public void parseTaskIndex_negativeNumber_throwsException() {
+        assertThrows(JohnnyException.class, () -> Parser.parseTaskIndex("-1", 3));
+    }
+
+    @Test
+    public void parseTaskIndex_oneAboveMax_throwsException() {
+        assertThrows(JohnnyException.class, () -> Parser.parseTaskIndex("4", 3));
+    }
+
     // --- parseTodo ---
 
     @Test
     public void parseTodo_validDescription_returnsTodo() throws JohnnyException {
         Todo todo = Parser.parseTodo("read book");
-        assertTrue(todo.toString().contains("read book"));
+        assertEquals("[T][ ] read book", todo.toString());
+    }
+
+    @Test
+    public void parseTodo_validDescription_correctFileString() throws JohnnyException {
+        Todo todo = Parser.parseTodo("read book");
+        assertEquals("T | 0 | read book", todo.toFileString());
+    }
+
+    @Test
+    public void parseTodo_leadingTrailingSpaces_trimmed() throws JohnnyException {
+        Todo todo = Parser.parseTodo("  read book  ");
+        assertEquals("[T][ ] read book", todo.toString());
     }
 
     @Test
@@ -97,29 +187,50 @@ public class ParserTest {
     @Test
     public void parseDeadline_validInput_returnsDeadline() throws JohnnyException {
         Deadline deadline = Parser.parseDeadline("homework /by 2024-09-15");
+        assertTrue(deadline.toString().contains("[D]"));
         assertTrue(deadline.toString().contains("homework"));
         assertTrue(deadline.toString().contains("Sept 15 2024")
                 || deadline.toString().contains("Sep 15 2024"));
     }
 
     @Test
+    public void parseDeadline_validInput_correctFileString() throws JohnnyException {
+        Deadline deadline = Parser.parseDeadline("homework /by 2024-09-15");
+        assertEquals("D | 0 | homework | 2024-09-15", deadline.toFileString());
+    }
+
+    @Test
     public void parseDeadline_missingByDelimiter_throwsException() {
-        assertThrows(JohnnyException.class, () -> Parser.parseDeadline("homework"));
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseDeadline("homework"));
+        assertTrue(e.getMessage().contains("Invalid deadline format"));
     }
 
     @Test
     public void parseDeadline_emptyDescription_throwsException() {
-        assertThrows(JohnnyException.class, () -> Parser.parseDeadline(" /by 2024-09-15"));
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseDeadline(" /by 2024-09-15"));
+        assertTrue(e.getMessage().contains("description"));
     }
 
     @Test
     public void parseDeadline_emptyDate_throwsException() {
-        assertThrows(JohnnyException.class, () -> Parser.parseDeadline("homework /by "));
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseDeadline("homework /by "));
+        assertTrue(e.getMessage().contains("date"));
     }
 
     @Test
     public void parseDeadline_invalidDateFormat_throwsException() {
-        assertThrows(JohnnyException.class, () -> Parser.parseDeadline("homework /by Sunday"));
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseDeadline("homework /by Sunday"));
+        assertTrue(e.getMessage().contains("yyyy-MM-dd"));
+    }
+
+    @Test
+    public void parseDeadline_partialDate_throwsException() {
+        assertThrows(JohnnyException.class,
+                () -> Parser.parseDeadline("homework /by 2024-13-01"));
     }
 
     // --- parseEvent ---
@@ -127,15 +238,23 @@ public class ParserTest {
     @Test
     public void parseEvent_validInput_returnsEvent() throws JohnnyException {
         Event event = Parser.parseEvent("meeting /from 2024-03-01 /to 2024-03-03");
+        assertTrue(event.toString().contains("[E]"));
         assertTrue(event.toString().contains("meeting"));
         assertTrue(event.toString().contains("Mar 01 2024"));
         assertTrue(event.toString().contains("Mar 03 2024"));
     }
 
     @Test
+    public void parseEvent_validInput_correctFileString() throws JohnnyException {
+        Event event = Parser.parseEvent("meeting /from 2024-03-01 /to 2024-03-03");
+        assertEquals("E | 0 | meeting | 2024-03-01 | 2024-03-03", event.toFileString());
+    }
+
+    @Test
     public void parseEvent_missingFromDelimiter_throwsException() {
-        assertThrows(JohnnyException.class,
+        JohnnyException e = assertThrows(JohnnyException.class,
                 () -> Parser.parseEvent("meeting /to 2024-03-03"));
+        assertTrue(e.getMessage().contains("Invalid event format"));
     }
 
     @Test
@@ -145,14 +264,50 @@ public class ParserTest {
     }
 
     @Test
-    public void parseEvent_invalidDateFormat_throwsException() {
+    public void parseEvent_missingBothDelimiters_throwsException() {
         assertThrows(JohnnyException.class,
-                () -> Parser.parseEvent("meeting /from Monday /to Friday"));
+                () -> Parser.parseEvent("meeting"));
+    }
+
+    @Test
+    public void parseEvent_emptyDescription_throwsException() {
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseEvent(" /from 2024-03-01 /to 2024-03-03"));
+        assertTrue(e.getMessage().contains("description"));
+    }
+
+    @Test
+    public void parseEvent_emptyFromDate_throwsException() {
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseEvent("meeting /from  /to 2024-03-03"));
+        assertTrue(e.getMessage().contains("start date"));
+    }
+
+    @Test
+    public void parseEvent_emptyToDate_throwsException() {
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseEvent("meeting /from 2024-03-01 /to "));
+        assertTrue(e.getMessage().contains("end date"));
+    }
+
+    @Test
+    public void parseEvent_invalidStartDate_throwsException() {
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseEvent("meeting /from Monday /to 2024-03-03"));
+        assertTrue(e.getMessage().contains("start date"));
+    }
+
+    @Test
+    public void parseEvent_invalidEndDate_throwsException() {
+        JohnnyException e = assertThrows(JohnnyException.class,
+                () -> Parser.parseEvent("meeting /from 2024-03-01 /to Friday"));
+        assertTrue(e.getMessage().contains("end date"));
     }
 
     @Test
     public void parseEvent_fromAfterTo_throwsException() {
-        assertThrows(JohnnyException.class,
+        JohnnyException e = assertThrows(JohnnyException.class,
                 () -> Parser.parseEvent("meeting /to 2024-03-01 /from 2024-03-03"));
+        assertTrue(e.getMessage().contains("/from must come before /to"));
     }
 }
