@@ -1,4 +1,13 @@
+package johnny;
+
 import java.io.IOException;
+
+import johnny.command.Command;
+import johnny.command.Parser;
+import johnny.storage.Storage;
+import johnny.task.Task;
+import johnny.task.TaskList;
+import johnny.ui.Ui;
 
 /**
  * Main application class for the Johnny chatbot.

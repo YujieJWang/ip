@@ -1,5 +1,12 @@
+package johnny.command;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
+import johnny.JohnnyException;
+import johnny.task.Deadline;
+import johnny.task.Event;
+import johnny.task.Todo;
 
 /**
  * Parses user input into commands and task objects.

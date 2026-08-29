@@ -1,4 +1,9 @@
+package johnny.ui;
+
 import java.util.Scanner;
+
+import johnny.task.Task;
+import johnny.task.TaskList;
 
 /**
  * Handles all interactions with the user, including reading input

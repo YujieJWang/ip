@@ -1,3 +1,5 @@
+package johnny.command;
+
 /**
  * Represents the supported commands for the Johnny chatbot.
  */

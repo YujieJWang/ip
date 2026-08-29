@@ -1,3 +1,5 @@
+package johnny;
+
 /**
  * Represents exceptions specific to the Johnny chatbot.
  */

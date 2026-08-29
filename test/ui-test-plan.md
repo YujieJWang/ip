@@ -3,7 +3,7 @@
 ## Compilation
 
 ```bash
-javac src/main/java/*.java -d out/production/ip
+find src/main/java -name "*.java" | xargs javac -d out/production/ip
 ```
 
 ## Test Cases

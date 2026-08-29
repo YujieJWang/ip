@@ -1,3 +1,5 @@
+package johnny.task;
+
 /**
  * Represents a task without any date/time attached.
  */

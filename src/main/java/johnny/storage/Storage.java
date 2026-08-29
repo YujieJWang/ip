@@ -1,3 +1,5 @@
+package johnny.storage;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,6 +8,12 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import johnny.task.Deadline;
+import johnny.task.Event;
+import johnny.task.Task;
+import johnny.task.TaskList;
+import johnny.task.Todo;
 
 /**
  * Handles saving and loading tasks to/from a file on disk.

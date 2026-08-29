@@ -1,3 +1,5 @@
+package johnny.task;
+
 /**
  * Represents a task with a description and completion status.
  * Base class for Todo, Deadline, and Event.
