@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Johnny {
     private static final String LINE = "____________________________________________________________";
     private static final String BANNER = "     _       _                       \n"
@@ -22,8 +25,8 @@ public class Johnny {
     }
 
     public static void main(String[] args) {
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        java.util.ArrayList<Task> tasks = new java.util.ArrayList<>();
+        java.util.Scanner scanner = new Scanner(System.in);
+        java.util.ArrayList<Task> tasks = new ArrayList<>();
 
         printLine();
         System.out.print(BANNER);
