@@ -333,3 +333,46 @@ bye
      Bye bye! See you again soon.
     ____________________________________________________________
 ```
+
+---
+
+### Test: Load saved tasks on startup
+
+**Aim:** Verify tasks saved from a previous session are loaded when the app starts.
+
+**Setup:**
+Create `./data/johnny.txt` with the following content before running:
+```
+T | 1 | read book
+D | 0 | return book | Sunday
+E | 0 | project meeting | Mon 2pm | 4pm
+```
+
+**Inputs:**
+```
+list
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     Here are the tasks in your list:
+     1.[T][X] read book
+     2.[D][ ] return book (by: Sunday)
+     3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```

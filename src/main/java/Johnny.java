@@ -35,8 +35,14 @@ public class Johnny {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
         Storage storage = new Storage("./data/johnny.txt");
+        ArrayList<Task> tasks;
+        try {
+            tasks = storage.load();
+        } catch (IOException e) {
+            printIndented("Warning: Could not load saved tasks. Starting with an empty list.");
+            tasks = new ArrayList<>();
+        }
 
         printLine();
         System.out.print(BANNER);
