@@ -95,6 +95,12 @@ public class Johnny {
                     ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
                     saveTasks();
                     break;
+                case FIND:
+                    if (arguments.trim().isEmpty()) {
+                        throw new JohnnyException("Please provide a keyword to search for.");
+                    }
+                    ui.showFindResults(tasks.find(arguments.trim()));
+                    break;
                 case UNKNOWN:
                     throw new JohnnyException("I'm sorry, but I'm not too sure what that means :(");
                 }

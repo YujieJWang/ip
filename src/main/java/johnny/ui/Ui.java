@@ -1,5 +1,6 @@
 package johnny.ui;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import johnny.task.Task;
@@ -103,6 +104,13 @@ public class Ui {
         printIndented("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             printIndented((i + 1) + "." + tasks.get(i));
+        }
+    }
+
+    public void showFindResults(ArrayList<Task> matches) {
+        printIndented("Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            printIndented((i + 1) + "." + matches.get(i));
         }
     }
 }
