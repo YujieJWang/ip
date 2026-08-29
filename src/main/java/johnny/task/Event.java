@@ -15,12 +15,20 @@ public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;
 
+    /**
+     * Creates an event task spanning a date range.
+     *
+     * @param description the task description
+     * @param from the start date
+     * @param to the end date
+     */
     public Event(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;
         this.to = to;
     }
 
+    /** Returns file format: {@code E | done | description | from | to}. */
     @Override
     public String toFileString() {
         return "E | " + super.toFileString() + " | " + from + " | " + to;

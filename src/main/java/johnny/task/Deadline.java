@@ -14,11 +14,18 @@ public class Deadline extends Task {
 
     protected LocalDate by;
 
+    /**
+     * Creates a deadline task with the given description and due date.
+     *
+     * @param description the task description
+     * @param by the due date
+     */
     public Deadline(String description, LocalDate by) {
         super(description);
         this.by = by;
     }
 
+    /** Returns file format: {@code D | done | description | yyyy-MM-dd}. */
     @Override
     public String toFileString() {
         return "D | " + super.toFileString() + " | " + by;

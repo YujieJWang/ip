@@ -21,22 +21,27 @@ public class Ui {
 
     private final Scanner scanner;
 
+    /** Creates a Ui that reads from standard input. */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
 
+    /** Returns true if there is another line of user input available. */
     public boolean hasNextLine() {
         return scanner.hasNextLine();
     }
 
+    /** Reads and returns the next line of user input. */
     public String readCommand() {
         return scanner.nextLine();
     }
 
+    /** Closes the underlying input scanner. */
     public void close() {
         scanner.close();
     }
 
+    /** Prints a horizontal divider line. */
     public void showLine() {
         System.out.println("    " + LINE);
     }
@@ -45,6 +50,7 @@ public class Ui {
         System.out.println("     " + message);
     }
 
+    /** Displays the welcome banner and greeting message. */
     public void showGreeting() {
         showLine();
         System.out.print(BANNER);
@@ -69,6 +75,7 @@ public class Ui {
         printIndented("OOPS!!! " + message);
     }
 
+    /** Displays a confirmation message after a task is added. */
     public void showTaskAdded(Task task, int taskCount) {
         printIndented("Got it. I've added this task:");
         printIndented("  " + task);
@@ -91,6 +98,7 @@ public class Ui {
         printIndented("Now you have " + taskCount + " tasks in the list.");
     }
 
+    /** Displays all tasks in the list, numbered starting from 1. */
     public void showTaskList(TaskList tasks) {
         printIndented("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
