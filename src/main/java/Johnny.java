@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 
 public class Johnny {
 
@@ -26,7 +25,7 @@ public class Johnny {
         return index;
     }
 
-    private static void saveTasks(Storage storage, ArrayList<Task> tasks, Ui ui) {
+    private static void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
             storage.save(tasks);
         } catch (IOException e) {
@@ -37,12 +36,12 @@ public class Johnny {
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage("./data/johnny.txt");
-        ArrayList<Task> tasks;
+        TaskList tasks;
         try {
-            tasks = storage.load();
+            tasks = new TaskList(storage.load());
         } catch (Exception e) {
             ui.showLoadingError();
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
         }
 
         ui.showGreeting();
@@ -81,7 +80,7 @@ public class Johnny {
                     break;
                 case DELETE:
                     int deleteIndex = parseTaskIndex(arguments, tasks.size());
-                    Task removed = tasks.remove(deleteIndex);
+                    Task removed = tasks.delete(deleteIndex);
                     ui.showTaskDeleted(removed, tasks.size());
                     saveTasks(storage, tasks, ui);
                     break;

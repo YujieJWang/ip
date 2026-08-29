@@ -68,10 +68,10 @@ public class Storage {
     /**
      * Saves all tasks to the file, creating the parent directory if needed.
      */
-    public void save(ArrayList<Task> tasks) throws IOException {
+    public void save(TaskList tasks) throws IOException {
         Files.createDirectories(filePath.getParent());
         try (FileWriter fw = new FileWriter(filePath.toFile())) {
-            for (Task task : tasks) {
+            for (Task task : tasks.getAll()) {
                 fw.write(task.toFileString() + System.lineSeparator());
             }
         }

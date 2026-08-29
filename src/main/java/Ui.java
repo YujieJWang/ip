@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -87,7 +86,7 @@ public class Ui {
         printIndented("Now you have " + taskCount + " tasks in the list.");
     }
 
-    public void showTaskList(ArrayList<Task> tasks) {
+    public void showTaskList(TaskList tasks) {
         printIndented("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             printIndented((i + 1) + "." + tasks.get(i));
