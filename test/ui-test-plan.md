@@ -175,8 +175,8 @@ bye
 **Inputs:**
 ```
 todo borrow book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2019-12-02
+event project meeting /from 2024-08-06 /to 2024-08-06
 list
 bye
 ```
@@ -200,19 +200,19 @@ bye
     ____________________________________________________________
     ____________________________________________________________
      Got it. I've added this task:
-       [D][ ] return book (by: Sunday)
+       [D][ ] return book (by: Dec 02 2019)
      Now you have 2 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
      Got it. I've added this task:
-       [E][ ] project meeting (from: Mon 2pm to: 4pm)
+       [E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
      Now you have 3 tasks in the list.
     ____________________________________________________________
     ____________________________________________________________
      Here are the tasks in your list:
      1.[T][ ] borrow book
-     2.[D][ ] return book (by: Sunday)
-     3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+     2.[D][ ] return book (by: Dec 02 2019)
+     3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
     ____________________________________________________________
     ____________________________________________________________
      Bye bye! See you again soon.
@@ -493,7 +493,7 @@ bye
      What can I do for you?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! Invalid event format. Use: event <description> /from <start> /to <end>
+     OOPS!!! Invalid event format. Use: event <description> /from <date> /to <date>
     ____________________________________________________________
     ____________________________________________________________
      Bye bye! See you again soon.
@@ -511,7 +511,7 @@ Create `./data/johnny.txt` with the following content before running:
 ```
 T | 1 | read book
 badline
-D | 0 | homework | Monday
+D | 0 | homework | 2024-09-15
 ```
 
 **Inputs:**
@@ -535,7 +535,7 @@ bye
     ____________________________________________________________
      Here are the tasks in your list:
      1.[T][X] read book
-     2.[D][ ] homework (by: Monday)
+     2.[D][ ] homework (by: Sept 15 2024)
     ____________________________________________________________
     ____________________________________________________________
      Bye bye! See you again soon.
@@ -552,8 +552,8 @@ bye
 Create `./data/johnny.txt` with the following content before running:
 ```
 T | 1 | read book
-D | 0 | return book | Sunday
-E | 0 | project meeting | Mon 2pm | 4pm
+D | 0 | return book | 2019-12-02
+E | 0 | project meeting | 2024-08-06 | 2024-08-06
 ```
 
 **Inputs:**
@@ -577,8 +577,86 @@ bye
     ____________________________________________________________
      Here are the tasks in your list:
      1.[T][X] read book
-     2.[D][ ] return book (by: Sunday)
-     3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+     2.[D][ ] return book (by: Dec 02 2019)
+     3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Date parsing and formatting
+
+**Aim:** Verify that dates in yyyy-MM-dd format are parsed and displayed as MMM dd yyyy.
+
+**Inputs:**
+```
+deadline return book /by 2019-10-15
+event conference /from 2024-03-01 /to 2024-03-03
+list
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     Got it. I've added this task:
+       [D][ ] return book (by: Oct 15 2019)
+     Now you have 1 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Got it. I've added this task:
+       [E][ ] conference (from: Mar 01 2024 to: Mar 03 2024)
+     Now you have 2 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Here are the tasks in your list:
+     1.[D][ ] return book (by: Oct 15 2019)
+     2.[E][ ] conference (from: Mar 01 2024 to: Mar 03 2024)
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - invalid date format
+
+**Aim:** Verify error when deadline date is not in yyyy-MM-dd format.
+
+**Inputs:**
+```
+deadline homework /by Sunday
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).
     ____________________________________________________________
     ____________________________________________________________
      Bye bye! See you again soon.
