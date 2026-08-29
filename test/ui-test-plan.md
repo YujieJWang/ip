@@ -633,6 +633,97 @@ bye
 
 ---
 
+### Test: Find tasks by keyword
+
+**Aim:** Verify the find command returns matching tasks.
+
+**Inputs:**
+```
+todo read book
+todo return book
+deadline borrow book /by 2024-09-15
+todo buy groceries
+find book
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     Got it. I've added this task:
+       [T][ ] read book
+     Now you have 1 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Got it. I've added this task:
+       [T][ ] return book
+     Now you have 2 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Got it. I've added this task:
+       [D][ ] borrow book (by: Sept 15 2024)
+     Now you have 3 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Got it. I've added this task:
+       [T][ ] buy groceries
+     Now you have 4 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Here are the matching tasks in your list:
+     1.[T][ ] read book
+     2.[T][ ] return book
+     3.[D][ ] borrow book (by: Sept 15 2024)
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - find without keyword
+
+**Aim:** Verify error when find is called with no keyword.
+
+**Inputs:**
+```
+find
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _                       
+    | | ___ | |__  _ __  _ __  _   _ 
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/ 
+     Hello! I'm Johnny.
+     What can I do for you?
+    ____________________________________________________________
+    ____________________________________________________________
+     OOPS!!! Please provide a keyword to search for.
+    ____________________________________________________________
+    ____________________________________________________________
+     Bye bye! See you again soon.
+    ____________________________________________________________
+```
+
+---
+
 ### Test: Error - invalid date format
 
 **Aim:** Verify error when deadline date is not in yyyy-MM-dd format.
