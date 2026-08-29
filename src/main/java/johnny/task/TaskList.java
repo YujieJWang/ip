@@ -10,10 +10,12 @@ public class TaskList {
 
     private final ArrayList<Task> tasks;
 
+    /** Creates an empty task list. */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
+    /** Creates a task list pre-populated with the given tasks. */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
@@ -22,6 +24,7 @@ public class TaskList {
         tasks.add(task);
     }
 
+    /** Removes and returns the task at the given zero-based index. */
     public Task delete(int index) {
         return tasks.remove(index);
     }

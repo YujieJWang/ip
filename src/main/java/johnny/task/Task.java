@@ -8,11 +8,17 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Creates a new task with the given description, initially not done.
+     *
+     * @param description the task description
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
+    /** Returns "X" if the task is done, or a space " " if not done. */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
@@ -33,6 +39,7 @@ public class Task {
         return (isDone ? "1" : "0") + " | " + description;
     }
 
+    /** Returns a display string in the format {@code [X] description} or {@code [ ] description}. */
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;

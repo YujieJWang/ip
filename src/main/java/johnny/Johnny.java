@@ -19,6 +19,12 @@ public class Johnny {
     private final Storage storage;
     private TaskList tasks;
 
+    /**
+     * Creates a Johnny instance, loading saved tasks from the given file path.
+     * If the file cannot be read, starts with an empty task list.
+     *
+     * @param filePath path to the task data file (e.g., "./data/johnny.txt")
+     */
     public Johnny(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -104,6 +110,7 @@ public class Johnny {
         ui.close();
     }
 
+    /** Entry point for the Johnny chatbot application. */
     public static void main(String[] args) {
         new Johnny("./data/johnny.txt").run();
     }

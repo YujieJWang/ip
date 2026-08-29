@@ -23,6 +23,11 @@ public class Storage {
 
     private final Path filePath;
 
+    /**
+     * Creates a Storage instance that reads from and writes to the given file path.
+     *
+     * @param filePath path to the task data file (e.g., "./data/johnny.txt")
+     */
     public Storage(String filePath) {
         this.filePath = Paths.get(filePath);
     }
