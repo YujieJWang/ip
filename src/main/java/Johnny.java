@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -138,7 +140,14 @@ public class Johnny {
                     if (by.isEmpty()) {
                         throw new JohnnyException("The deadline date cannot be empty.");
                     }
-                    tasks.add(new Deadline(deadlineDesc, by));
+                    LocalDate byDate;
+                    try {
+                        byDate = LocalDate.parse(by);
+                    } catch (DateTimeParseException e) {
+                        throw new JohnnyException(
+                                "Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+                    }
+                    tasks.add(new Deadline(deadlineDesc, byDate));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
                     saveTasks(storage, tasks);
                     break;
@@ -148,7 +157,7 @@ public class Johnny {
                     int toIndex = arguments.indexOf(" /to ");
                     if (fromIndex == -1 || toIndex == -1) {
                         throw new JohnnyException(
-                                "Invalid event format. Use: event <description> /from <start> /to <end>");
+                                "Invalid event format. Use: event <description> /from <date> /to <date>");
                     }
                     if (fromIndex > toIndex) {
                         throw new JohnnyException(
@@ -161,12 +170,26 @@ public class Johnny {
                         throw new JohnnyException("The description of an event cannot be empty.");
                     }
                     if (from.isEmpty()) {
-                        throw new JohnnyException("The start time of an event cannot be empty.");
+                        throw new JohnnyException("The start date of an event cannot be empty.");
                     }
                     if (to.isEmpty()) {
-                        throw new JohnnyException("The end time of an event cannot be empty.");
+                        throw new JohnnyException("The end date of an event cannot be empty.");
                     }
-                    tasks.add(new Event(eventDesc, from, to));
+                    LocalDate fromDate;
+                    LocalDate toDate;
+                    try {
+                        fromDate = LocalDate.parse(from);
+                    } catch (DateTimeParseException e) {
+                        throw new JohnnyException(
+                                "Invalid start date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+                    }
+                    try {
+                        toDate = LocalDate.parse(to);
+                    } catch (DateTimeParseException e) {
+                        throw new JohnnyException(
+                                "Invalid end date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+                    }
+                    tasks.add(new Event(eventDesc, fromDate, toDate));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
                     saveTasks(storage, tasks);
                     break;

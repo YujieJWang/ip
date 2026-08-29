@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +44,11 @@ public class Storage {
                     task = new Todo(description);
                     break;
                 case "D":
-                    task = new Deadline(description, parts[3]);
+                    task = new Deadline(description, LocalDate.parse(parts[3]));
                     break;
                 case "E":
-                    task = new Event(description, parts[3], parts[4]);
+                    task = new Event(description, LocalDate.parse(parts[3]),
+                            LocalDate.parse(parts[4]));
                     break;
                 default:
                     continue;
@@ -55,8 +57,8 @@ public class Storage {
                     task.markAsDone();
                 }
                 tasks.add(task);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                // Skip corrupted lines that don't have enough fields
+            } catch (ArrayIndexOutOfBoundsException | java.time.format.DateTimeParseException e) {
+                // Skip corrupted lines (missing fields or unparseable dates)
                 continue;
             }
         }
