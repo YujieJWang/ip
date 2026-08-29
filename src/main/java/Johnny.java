@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,9 +25,45 @@ public class Johnny {
         printIndented("Now you have " + taskCount + " tasks in the list.");
     }
 
+    private static void saveTasks(Storage storage, ArrayList<Task> tasks) {
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            printIndented("Warning: Could not save tasks to disk.");
+        }
+    }
+
+    /**
+     * Parses a 1-based task index from the user's argument string.
+     * Throws JohnnyException if the argument is missing, non-numeric, or out of range.
+     */
+    private static int parseTaskIndex(String arguments, int taskCount) throws JohnnyException {
+        if (arguments.trim().isEmpty()) {
+            throw new JohnnyException("Please provide a task number.");
+        }
+        int index;
+        try {
+            index = Integer.parseInt(arguments.trim()) - 1;
+        } catch (NumberFormatException e) {
+            throw new JohnnyException("'" + arguments.trim() + "' is not a valid task number.");
+        }
+        if (index < 0 || index >= taskCount) {
+            throw new JohnnyException("Task number " + (index + 1) + " is out of range. "
+                    + "You have " + taskCount + " tasks.");
+        }
+        return index;
+    }
+
     public static void main(String[] args) {
-        java.util.Scanner scanner = new Scanner(System.in);
-        java.util.ArrayList<Task> tasks = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        Storage storage = new Storage("./data/johnny.txt");
+        ArrayList<Task> tasks;
+        try {
+            tasks = storage.load();
+        } catch (Exception e) {
+            printIndented("Warning: Could not load saved tasks. Starting with an empty list.");
+            tasks = new ArrayList<>();
+        }
 
         printLine();
         System.out.print(BANNER);
@@ -34,7 +71,7 @@ public class Johnny {
         printIndented("What can I do for you?");
         printLine();
 
-        while (true) {
+        while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
             printLine();
             try {
@@ -58,47 +95,82 @@ public class Johnny {
                     }
                     break;
                 case MARK:
-                    int markIndex = Integer.parseInt(arguments) - 1;
+                    int markIndex = parseTaskIndex(arguments, tasks.size());
                     tasks.get(markIndex).markAsDone();
                     printIndented("Nice! I've marked this task as done:");
                     printIndented("  " + tasks.get(markIndex));
+                    saveTasks(storage, tasks);
                     break;
                 case UNMARK:
-                    int unmarkIndex = Integer.parseInt(arguments) - 1;
+                    int unmarkIndex = parseTaskIndex(arguments, tasks.size());
                     tasks.get(unmarkIndex).markAsNotDone();
                     printIndented("OK, I've marked this task as not done yet:");
                     printIndented("  " + tasks.get(unmarkIndex));
+                    saveTasks(storage, tasks);
                     break;
                 case DELETE:
-                    int deleteIndex = Integer.parseInt(arguments) - 1;
+                    int deleteIndex = parseTaskIndex(arguments, tasks.size());
                     Task removed = tasks.remove(deleteIndex);
                     printIndented("Noted. I've removed this task:");
                     printIndented("  " + removed);
                     printIndented("Now you have " + tasks.size() + " tasks in the list.");
+                    saveTasks(storage, tasks);
                     break;
                 case TODO:
                     if (arguments.trim().isEmpty()) {
                         throw new JohnnyException("The description of a todo cannot be empty.");
                     }
-                    tasks.add(new Todo(arguments));
+                    tasks.add(new Todo(arguments.trim()));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    saveTasks(storage, tasks);
                     break;
-                case DEADLINE:
+                case DEADLINE: {
                     int byIndex = arguments.indexOf(" /by ");
-                    String deadlineDesc = arguments.substring(0, byIndex);
-                    String by = arguments.substring(byIndex + 5);
+                    if (byIndex == -1) {
+                        throw new JohnnyException(
+                                "Invalid deadline format. Use: deadline <description> /by <date>");
+                    }
+                    String deadlineDesc = arguments.substring(0, byIndex).trim();
+                    String by = arguments.substring(byIndex + 5).trim();
+                    if (deadlineDesc.isEmpty()) {
+                        throw new JohnnyException("The description of a deadline cannot be empty.");
+                    }
+                    if (by.isEmpty()) {
+                        throw new JohnnyException("The deadline date cannot be empty.");
+                    }
                     tasks.add(new Deadline(deadlineDesc, by));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    saveTasks(storage, tasks);
                     break;
-                case EVENT:
+                }
+                case EVENT: {
                     int fromIndex = arguments.indexOf(" /from ");
                     int toIndex = arguments.indexOf(" /to ");
-                    String eventDesc = arguments.substring(0, fromIndex);
-                    String from = arguments.substring(fromIndex + 7, toIndex);
-                    String to = arguments.substring(toIndex + 5);
+                    if (fromIndex == -1 || toIndex == -1) {
+                        throw new JohnnyException(
+                                "Invalid event format. Use: event <description> /from <start> /to <end>");
+                    }
+                    if (fromIndex > toIndex) {
+                        throw new JohnnyException(
+                                "Invalid event format. /from must come before /to.");
+                    }
+                    String eventDesc = arguments.substring(0, fromIndex).trim();
+                    String from = arguments.substring(fromIndex + 7, toIndex).trim();
+                    String to = arguments.substring(toIndex + 5).trim();
+                    if (eventDesc.isEmpty()) {
+                        throw new JohnnyException("The description of an event cannot be empty.");
+                    }
+                    if (from.isEmpty()) {
+                        throw new JohnnyException("The start time of an event cannot be empty.");
+                    }
+                    if (to.isEmpty()) {
+                        throw new JohnnyException("The end time of an event cannot be empty.");
+                    }
                     tasks.add(new Event(eventDesc, from, to));
                     printTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                    saveTasks(storage, tasks);
                     break;
+                }
                 case UNKNOWN:
                     throw new JohnnyException("I'm sorry, but I'm not too sure what that means :(");
                 }
