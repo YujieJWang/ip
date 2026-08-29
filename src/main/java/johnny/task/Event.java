@@ -12,8 +12,8 @@ public class Event extends Task {
     private static final DateTimeFormatter DISPLAY_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    protected LocalDate from;
-    protected LocalDate to;
+    private final LocalDate from;
+    private final LocalDate to;
 
     /**
      * Creates an event task spanning a date range.

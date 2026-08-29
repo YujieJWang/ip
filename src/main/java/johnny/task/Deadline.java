@@ -12,7 +12,7 @@ public class Deadline extends Task {
     private static final DateTimeFormatter DISPLAY_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    protected LocalDate by;
+    private final LocalDate by;
 
     /**
      * Creates a deadline task with the given description and due date.

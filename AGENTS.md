@@ -30,6 +30,10 @@ After every code update:
 2. **Update JUnit tests**: If the change adds, modifies, or removes methods in tested classes, update the corresponding JUnit tests in `src/test/java/` to maintain the 50% test coverage target. Focus on the highest-value methods: complex logic, core business rules, and critical data paths (e.g., parsing, serialization, persistence). Run `./gradlew test` to verify all JUnit tests pass.
 3. **Run UI tests**: Invoke the `test-ui` skill to verify all test cases pass. Do not report the change as complete until tests pass.
 
+# Coding standard
+
+Follow the `seedu-java-coding-standard` skill for all Java code in this project. Apply its rules when writing new code and when modifying existing code.
+
 # Project-specific requirements
 
 ## Java version:
