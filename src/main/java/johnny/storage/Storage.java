@@ -53,18 +53,18 @@ public class Storage {
                 String description = parts[2];
                 Task task;
                 switch (type) {
-                case "T":
-                    task = new Todo(description);
-                    break;
-                case "D":
-                    task = new Deadline(description, LocalDate.parse(parts[3]));
-                    break;
-                case "E":
-                    task = new Event(description, LocalDate.parse(parts[3]),
-                            LocalDate.parse(parts[4]));
-                    break;
-                default:
-                    continue;
+                    case "T":
+                        task = new Todo(description);
+                        break;
+                    case "D":
+                        task = new Deadline(description, LocalDate.parse(parts[3]));
+                        break;
+                    case "E":
+                        task = new Event(description, LocalDate.parse(parts[3]),
+                                LocalDate.parse(parts[4]));
+                        break;
+                    default:
+                        continue;
                 }
                 if (isDone) {
                     task.markAsDone();

@@ -56,53 +56,53 @@ public class Johnny {
                 String arguments = Parser.parseArguments(input);
 
                 switch (command) {
-                case BYE:
-                    ui.showFarewell();
-                    break;
-                case LIST:
-                    ui.showTaskList(tasks);
-                    break;
-                case MARK:
-                    int markIndex = Parser.parseTaskIndex(arguments, tasks.size());
-                    tasks.get(markIndex).markAsDone();
-                    ui.showTaskMarked(tasks.get(markIndex));
-                    saveTasks();
-                    break;
-                case UNMARK:
-                    int unmarkIndex = Parser.parseTaskIndex(arguments, tasks.size());
-                    tasks.get(unmarkIndex).markAsNotDone();
-                    ui.showTaskUnmarked(tasks.get(unmarkIndex));
-                    saveTasks();
-                    break;
-                case DELETE:
-                    int deleteIndex = Parser.parseTaskIndex(arguments, tasks.size());
-                    Task removed = tasks.delete(deleteIndex);
-                    ui.showTaskDeleted(removed, tasks.size());
-                    saveTasks();
-                    break;
-                case TODO:
-                    tasks.add(Parser.parseTodo(arguments));
-                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
-                    saveTasks();
-                    break;
-                case DEADLINE:
-                    tasks.add(Parser.parseDeadline(arguments));
-                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
-                    saveTasks();
-                    break;
-                case EVENT:
-                    tasks.add(Parser.parseEvent(arguments));
-                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
-                    saveTasks();
-                    break;
-                case FIND:
-                    if (arguments.trim().isEmpty()) {
-                        throw new JohnnyException("Please provide a keyword to search for.");
-                    }
-                    ui.showFindResults(tasks.find(arguments.trim()));
-                    break;
-                case UNKNOWN:
-                    throw new JohnnyException("I'm sorry, but I'm not too sure what that means :(");
+                    case BYE:
+                        ui.showFarewell();
+                        break;
+                    case LIST:
+                        ui.showTaskList(tasks);
+                        break;
+                    case MARK:
+                        int markIndex = Parser.parseTaskIndex(arguments, tasks.size());
+                        tasks.get(markIndex).markAsDone();
+                        ui.showTaskMarked(tasks.get(markIndex));
+                        saveTasks();
+                        break;
+                    case UNMARK:
+                        int unmarkIndex = Parser.parseTaskIndex(arguments, tasks.size());
+                        tasks.get(unmarkIndex).markAsNotDone();
+                        ui.showTaskUnmarked(tasks.get(unmarkIndex));
+                        saveTasks();
+                        break;
+                    case DELETE:
+                        int deleteIndex = Parser.parseTaskIndex(arguments, tasks.size());
+                        Task removed = tasks.delete(deleteIndex);
+                        ui.showTaskDeleted(removed, tasks.size());
+                        saveTasks();
+                        break;
+                    case TODO:
+                        tasks.add(Parser.parseTodo(arguments));
+                        ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                        saveTasks();
+                        break;
+                    case DEADLINE:
+                        tasks.add(Parser.parseDeadline(arguments));
+                        ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                        saveTasks();
+                        break;
+                    case EVENT:
+                        tasks.add(Parser.parseEvent(arguments));
+                        ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
+                        saveTasks();
+                        break;
+                    case FIND:
+                        if (arguments.trim().isEmpty()) {
+                            throw new JohnnyException("Please provide a keyword to search for.");
+                        }
+                        ui.showFindResults(tasks.find(arguments.trim()));
+                        break;
+                    default:
+                        throw new JohnnyException("I'm sorry, but I'm not too sure what that means :(");
                 }
             } catch (JohnnyException e) {
                 ui.showError(e.getMessage());
