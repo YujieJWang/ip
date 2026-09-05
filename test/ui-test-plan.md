@@ -753,3 +753,24 @@ bye
      Bye bye! See you again soon.
     ____________________________________________________________
 ```
+
+---
+
+## Manual GUI Test Cases
+
+### Test: Enter commands and exit through the GUI
+
+**Aim:** Verify that Johnny can be operated entirely through its JavaFX interface.
+
+**Steps:**
+1. Run `./gradlew run`.
+2. Enter `todo read book` in the command field and press Enter.
+3. Enter `list` and click the **Send** button.
+4. Enter `bye` and press Enter.
+
+**Expected result:**
+- The window displays Johnny's greeting.
+- The ASCII-art banner is aligned using a monospace font.
+- The added task and task list appear in the conversation area.
+- Both Enter and the **Send** button submit commands.
+- The `bye` command displays the farewell and closes the window.

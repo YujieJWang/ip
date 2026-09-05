@@ -2,6 +2,7 @@ package johnny.ui;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 import johnny.task.Task;
 import johnny.task.TaskList;
@@ -18,91 +19,157 @@ public class Ui {
             + " _  | |/ _ \\| '_ \\| '_ \\| '_ \\| | | |\n"
             + "| |_| | (_) | | | | | | | | | | |_| |\n"
             + " \\___/ \\___/|_| |_|_| |_|_| |_|\\__, |\n"
-            + "                                |___/ \n";
+            + "                                |___/ ";
 
     private final Scanner scanner;
+    private final Consumer<String> output;
 
-    /** Creates a Ui that reads from standard input. */
+    /**
+     * Creates a UI that reads from standard input and writes to standard output.
+     */
     public Ui() {
-        this.scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
+        output = System.out::println;
     }
 
-    /** Returns true if there is another line of user input available. */
+    /**
+     * Creates a UI that sends output to the supplied destination.
+     *
+     * @param output destination for each complete line of output.
+     */
+    public Ui(Consumer<String> output) {
+        scanner = null;
+        this.output = output;
+    }
+
+    /**
+     * Returns whether another line of console input is available.
+     *
+     * @return true if another line can be read.
+     */
     public boolean hasNextLine() {
-        return scanner.hasNextLine();
+        return scanner != null && scanner.hasNextLine();
     }
 
-    /** Reads and returns the next line of user input. */
+    /**
+     * Reads the next line of console input.
+     *
+     * @return next input line.
+     */
     public String readCommand() {
         return scanner.nextLine();
     }
 
-    /** Closes the underlying input scanner. */
+    /**
+     * Closes the console input scanner, if present.
+     */
     public void close() {
-        scanner.close();
+        if (scanner != null) {
+            scanner.close();
+        }
     }
 
-    /** Prints a horizontal divider line. */
+    /**
+     * Displays a horizontal divider line.
+     */
     public void showLine() {
-        System.out.println("    " + LINE);
+        output.accept("    " + LINE);
     }
 
     private void printIndented(String message) {
-        System.out.println("     " + message);
+        output.accept("     " + message);
     }
 
-    /** Displays the welcome banner and greeting message. */
+    /**
+     * Displays the welcome banner and greeting message.
+     */
     public void showGreeting() {
         showLine();
-        System.out.print(BANNER);
+        output.accept(BANNER);
         printIndented("Hello! I'm Johnny.");
         printIndented("What can I do for you?");
         showLine();
     }
 
+    /**
+     * Displays the farewell message.
+     */
     public void showFarewell() {
         printIndented("Bye bye! See you again soon.");
     }
 
+    /**
+     * Displays the warning used when saved tasks cannot be loaded.
+     */
     public void showLoadingError() {
         printIndented("Warning: Could not load saved tasks. Starting with an empty list.");
     }
 
+    /**
+     * Displays the warning used when tasks cannot be saved.
+     */
     public void showSaveError() {
         printIndented("Warning: Could not save tasks to disk.");
     }
 
+    /**
+     * Displays a command error.
+     *
+     * @param message explanation of the error.
+     */
     public void showError(String message) {
         printIndented("OOPS!!! " + message);
     }
 
-    /** Displays a confirmation message after a task is added. */
+    /**
+     * Displays a confirmation message after a task is added.
+     *
+     * @param task task that was added.
+     * @param taskCount number of tasks after the addition.
+     */
     public void showTaskAdded(Task task, int taskCount) {
         printIndented("Got it. I've added this task:");
         printIndented("  " + task);
         printIndented("Now you have " + taskCount + " tasks in the list.");
     }
 
-    /** Displays a confirmation message after a task is marked as done. */
+    /**
+     * Displays a confirmation message after a task is marked as done.
+     *
+     * @param task task that was marked.
+     */
     public void showTaskMarked(Task task) {
         printIndented("Nice! I've marked this task as done:");
         printIndented("  " + task);
     }
 
-    /** Displays a confirmation message after a task is unmarked. */
+    /**
+     * Displays a confirmation message after a task is unmarked.
+     *
+     * @param task task that was unmarked.
+     */
     public void showTaskUnmarked(Task task) {
         printIndented("OK, I've marked this task as not done yet:");
         printIndented("  " + task);
     }
 
-    /** Displays a confirmation message after a task is deleted. */
+    /**
+     * Displays a confirmation message after a task is deleted.
+     *
+     * @param task task that was deleted.
+     * @param taskCount number of tasks after deletion.
+     */
     public void showTaskDeleted(Task task, int taskCount) {
         printIndented("Noted. I've removed this task:");
         printIndented("  " + task);
         printIndented("Now you have " + taskCount + " tasks in the list.");
     }
 
-    /** Displays all tasks in the list, numbered starting from 1. */
+    /**
+     * Displays all tasks in the list, numbered starting from 1.
+     *
+     * @param tasks tasks to display.
+     */
     public void showTaskList(TaskList tasks) {
         printIndented("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
@@ -110,7 +177,11 @@ public class Ui {
         }
     }
 
-    /** Displays tasks that match a search keyword, numbered starting from 1. */
+    /**
+     * Displays matching tasks, numbered starting from 1.
+     *
+     * @param matches matching tasks to display.
+     */
     public void showFindResults(ArrayList<Task> matches) {
         printIndented("Here are the matching tasks in your list:");
         for (int i = 0; i < matches.size(); i++) {
