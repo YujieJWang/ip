@@ -1,5 +1,6 @@
 package johnny;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,7 +26,10 @@ public class JohnnyTest {
         boolean shouldExit = johnny.processCommand("todo read book");
 
         assertFalse(shouldExit);
-        assertTrue(messages.contains("       [T][ ] read book"));
+        assertEquals(List.of(
+                "     Got it. I've added this task:",
+                "       [T][ ] read book",
+                "     Now you have 1 tasks in the list."), messages);
     }
 
     @Test

@@ -76,8 +76,10 @@ public class Ui {
         output.accept("    " + LINE);
     }
 
-    private void printIndented(String message) {
-        output.accept("     " + message);
+    private void printIndented(String... messages) {
+        for (String message : messages) {
+            output.accept("     " + message);
+        }
     }
 
     /**
@@ -86,8 +88,8 @@ public class Ui {
     public void showGreeting() {
         showLine();
         output.accept(BANNER);
-        printIndented("Hello! I'm Johnny.");
-        printIndented("What can I do for you?");
+        printIndented("Hello! I'm Johnny.",
+                "What can I do for you?");
         showLine();
     }
 
@@ -128,9 +130,9 @@ public class Ui {
      * @param taskCount number of tasks after the addition.
      */
     public void showTaskAdded(Task task, int taskCount) {
-        printIndented("Got it. I've added this task:");
-        printIndented("  " + task);
-        printIndented("Now you have " + taskCount + " tasks in the list.");
+        printIndented("Got it. I've added this task:",
+                "  " + task,
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -139,8 +141,8 @@ public class Ui {
      * @param task task that was marked.
      */
     public void showTaskMarked(Task task) {
-        printIndented("Nice! I've marked this task as done:");
-        printIndented("  " + task);
+        printIndented("Nice! I've marked this task as done:",
+                "  " + task);
     }
 
     /**
@@ -149,8 +151,8 @@ public class Ui {
      * @param task task that was unmarked.
      */
     public void showTaskUnmarked(Task task) {
-        printIndented("OK, I've marked this task as not done yet:");
-        printIndented("  " + task);
+        printIndented("OK, I've marked this task as not done yet:",
+                "  " + task);
     }
 
     /**
@@ -160,9 +162,9 @@ public class Ui {
      * @param taskCount number of tasks after deletion.
      */
     public void showTaskDeleted(Task task, int taskCount) {
-        printIndented("Noted. I've removed this task:");
-        printIndented("  " + task);
-        printIndented("Now you have " + taskCount + " tasks in the list.");
+        printIndented("Noted. I've removed this task:",
+                "  " + task,
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
