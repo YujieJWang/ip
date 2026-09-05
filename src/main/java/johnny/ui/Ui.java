@@ -83,16 +83,19 @@ public class Ui {
         printIndented("Now you have " + taskCount + " tasks in the list.");
     }
 
+    /** Displays a confirmation message after a task is marked as done. */
     public void showTaskMarked(Task task) {
         printIndented("Nice! I've marked this task as done:");
         printIndented("  " + task);
     }
 
+    /** Displays a confirmation message after a task is unmarked. */
     public void showTaskUnmarked(Task task) {
         printIndented("OK, I've marked this task as not done yet:");
         printIndented("  " + task);
     }
 
+    /** Displays a confirmation message after a task is deleted. */
     public void showTaskDeleted(Task task, int taskCount) {
         printIndented("Noted. I've removed this task:");
         printIndented("  " + task);
@@ -107,6 +110,7 @@ public class Ui {
         }
     }
 
+    /** Displays tasks that match a search keyword, numbered starting from 1. */
     public void showFindResults(ArrayList<Task> matches) {
         printIndented("Here are the matching tasks in your list:");
         for (int i = 0; i < matches.size(); i++) {
