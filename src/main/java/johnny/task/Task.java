@@ -23,6 +23,11 @@ public class Task {
         return (isDone ? "X" : " ");
     }
 
+    /** Returns whether this task is completed. */
+    public boolean isDone() {
+        return isDone;
+    }
+
     public void markAsDone() {
         this.isDone = true;
     }

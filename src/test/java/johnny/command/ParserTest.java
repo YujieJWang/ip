@@ -56,6 +56,11 @@ public class ParserTest {
     }
 
     @Test
+    public void parseCommand_undo_correctEnum() {
+        assertEquals(Command.UNDO, Parser.parseCommand("undo"));
+    }
+
+    @Test
     public void parseCommand_caseInsensitive_correctEnum() {
         assertEquals(Command.TODO, Parser.parseCommand("ToDo read book"));
     }
