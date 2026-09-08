@@ -25,6 +25,11 @@ public class TaskList {
         tasks.add(task);
     }
 
+    /** Inserts a task at the given zero-based index. */
+    public void add(int index, Task task) {
+        tasks.add(index, task);
+    }
+
     /** Removes and returns the task at the given zero-based index. */
     public Task delete(int index) {
         return tasks.remove(index);

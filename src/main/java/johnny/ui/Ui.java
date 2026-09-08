@@ -169,6 +169,11 @@ public class Ui {
                 "Now you have " + taskCount + " tasks in the list.");
     }
 
+    /** Displays a confirmation after the most recent task change is undone. */
+    public void showCommandUndone() {
+        printIndented("Done! I've undone the last command.");
+    }
+
     /**
      * Displays all tasks in the list, numbered starting from 1.
      *

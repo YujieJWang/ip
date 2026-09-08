@@ -59,6 +59,67 @@ public class JohnnyTest {
     }
 
     @Test
+    public void processCommand_undoAddedTask_removesTask() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        messages.clear();
+
+        johnny.processCommand("undo");
+        johnny.processCommand("list");
+
+        assertEquals(List.of(
+                "     Done! I've undone the last command.",
+                "     Here are the tasks in your list:"), messages);
+    }
+
+    @Test
+    public void processCommand_undoDeletedTask_restoresTaskAtOriginalPosition() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo first");
+        johnny.processCommand("todo second");
+        johnny.processCommand("delete 1");
+        messages.clear();
+
+        johnny.processCommand("undo");
+        johnny.processCommand("list");
+
+        assertEquals(List.of(
+                "     Done! I've undone the last command.",
+                "     Here are the tasks in your list:",
+                "     1.[T][ ] first",
+                "     2.[T][ ] second"), messages);
+    }
+
+    @Test
+    public void processCommand_undoMarkedTask_restoresPreviousStatus() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        johnny.processCommand("mark 1");
+        messages.clear();
+
+        johnny.processCommand("undo");
+        johnny.processCommand("list");
+
+        assertEquals(List.of(
+                "     Done! I've undone the last command.",
+                "     Here are the tasks in your list:",
+                "     1.[T][ ] read book"), messages);
+    }
+
+    @Test
+    public void processCommand_undoWithoutTaskChange_displaysError() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+
+        johnny.processCommand("undo");
+
+        assertEquals(List.of("     OOPS!!! There is no command to undo."), messages);
+    }
+
+    @Test
     public void constructor_directoryPath_displaysLoadingWarning() {
         List<String> messages = new ArrayList<>();
 

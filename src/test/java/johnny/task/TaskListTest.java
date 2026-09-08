@@ -46,6 +46,18 @@ public class TaskListTest {
     }
 
     @Test
+    public void add_atIndex_insertsAtRequestedPosition() {
+        TaskList list = new TaskList();
+        list.add(new Todo("first"));
+        list.add(new Todo("third"));
+
+        list.add(1, new Todo("second"));
+
+        assertEquals("[T][ ] second", list.get(1).toString());
+        assertEquals("[T][ ] third", list.get(2).toString());
+    }
+
+    @Test
     public void delete_middleTask_removesCorrectTask() {
         TaskList list = new TaskList();
         list.add(new Todo("first"));

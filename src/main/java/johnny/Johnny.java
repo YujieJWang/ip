@@ -17,6 +17,8 @@ public class Johnny {
     private final Ui ui;
     private final Storage storage;
     private TaskList tasks;
+    /** Restores the state before the latest successful task-changing command. */
+    private Runnable undoAction;
 
     /**
      * Creates a Johnny instance, loading saved tasks from the given file path.
@@ -61,14 +63,18 @@ public class Johnny {
 
     private void markTask(String arguments) throws JohnnyException {
         Task task = getTask(arguments);
+        boolean wasDone = task.isDone();
         task.markAsDone();
+        undoAction = wasDone ? task::markAsDone : task::markAsNotDone;
         ui.showTaskMarked(task);
         saveTasks();
     }
 
     private void unmarkTask(String arguments) throws JohnnyException {
         Task task = getTask(arguments);
+        boolean wasDone = task.isDone();
         task.markAsNotDone();
+        undoAction = wasDone ? task::markAsDone : task::markAsNotDone;
         ui.showTaskUnmarked(task);
         saveTasks();
     }
@@ -76,13 +82,26 @@ public class Johnny {
     private void deleteTask(String arguments) throws JohnnyException {
         int taskIndex = Parser.parseTaskIndex(arguments, tasks.size());
         Task deletedTask = tasks.delete(taskIndex);
+        undoAction = () -> tasks.add(taskIndex, deletedTask);
         ui.showTaskDeleted(deletedTask, tasks.size());
         saveTasks();
     }
 
     private void addTask(Task task) {
+        int taskIndex = tasks.size();
         tasks.add(task);
+        undoAction = () -> tasks.delete(taskIndex);
         ui.showTaskAdded(task, tasks.size());
+        saveTasks();
+    }
+
+    private void undoLastCommand() throws JohnnyException {
+        if (undoAction == null) {
+            throw new JohnnyException("There is no command to undo.");
+        }
+        undoAction.run();
+        undoAction = null;
+        ui.showCommandUndone();
         saveTasks();
     }
 
@@ -133,6 +152,9 @@ public class Johnny {
                     break;
                 case FIND:
                     findTasks(arguments);
+                    break;
+                case UNDO:
+                    undoLastCommand();
                     break;
                 default:
                     throw new JohnnyException("I'm sorry, but I'm not too sure what that means :(");
