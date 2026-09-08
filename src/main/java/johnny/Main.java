@@ -61,6 +61,8 @@ public class Main extends Application {
     }
 
     private void submit() {
+        assert johnny != null : "Johnny must be initialized before command submission";
+
         String command = input.getText().trim();
         if (command.isEmpty()) {
             return;

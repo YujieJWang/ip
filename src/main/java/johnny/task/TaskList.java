@@ -49,6 +49,8 @@ public class TaskList {
                 matches.add(task);
             }
         }
+        assert matches.size() <= tasks.size() && tasks.containsAll(matches)
+                : "Search results must be a subset of the task list";
         return matches;
     }
 

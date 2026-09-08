@@ -54,6 +54,7 @@ public class Parser {
             throw new JohnnyException("Task number " + (index + 1) + " is out of range. "
                     + "You have " + taskCount + " tasks.");
         }
+        assert index >= 0 && index < taskCount : "Validated task index must be within range";
         return index;
     }
 

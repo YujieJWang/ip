@@ -130,6 +130,7 @@ public class Ui {
      * @param taskCount number of tasks after the addition.
      */
     public void showTaskAdded(Task task, int taskCount) {
+        assert taskCount > 0 : "Task count must be positive after addition";
         printIndented("Got it. I've added this task:",
                 "  " + task,
                 "Now you have " + taskCount + " tasks in the list.");
@@ -162,6 +163,7 @@ public class Ui {
      * @param taskCount number of tasks after deletion.
      */
     public void showTaskDeleted(Task task, int taskCount) {
+        assert taskCount >= 0 : "Task count must not be negative after deletion";
         printIndented("Noted. I've removed this task:",
                 "  " + task,
                 "Now you have " + taskCount + " tasks in the list.");
