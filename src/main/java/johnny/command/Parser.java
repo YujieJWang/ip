@@ -86,13 +86,8 @@ public class Parser {
         if (dueDateText.isEmpty()) {
             throw new JohnnyException("The deadline date cannot be empty.");
         }
-        LocalDate dueDate;
-        try {
-            dueDate = LocalDate.parse(dueDateText);
-        } catch (DateTimeParseException e) {
-            throw new JohnnyException(
-                    "Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
-        }
+        LocalDate dueDate = parseDate(dueDateText,
+                "Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
         return new Deadline(description, dueDate);
     }
 
@@ -123,20 +118,26 @@ public class Parser {
         if (endDateText.isEmpty()) {
             throw new JohnnyException("The end date of an event cannot be empty.");
         }
-        LocalDate startDate;
-        LocalDate endDate;
-        try {
-            startDate = LocalDate.parse(startDateText);
-        } catch (DateTimeParseException e) {
-            throw new JohnnyException(
-                    "Invalid start date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
-        }
-        try {
-            endDate = LocalDate.parse(endDateText);
-        } catch (DateTimeParseException e) {
-            throw new JohnnyException(
-                    "Invalid end date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
-        }
+        LocalDate startDate = parseDate(startDateText,
+                "Invalid start date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+        LocalDate endDate = parseDate(endDateText,
+                "Invalid end date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
         return new Event(description, startDate, endDate);
+    }
+
+    /**
+     * Parses an ISO date and translates formatting failures into a user-facing error.
+     *
+     * @param dateText date in {@code yyyy-MM-dd} format
+     * @param errorMessage message to show when the date is invalid
+     * @return parsed date
+     * @throws JohnnyException if the date is invalid
+     */
+    private static LocalDate parseDate(String dateText, String errorMessage) throws JohnnyException {
+        try {
+            return LocalDate.parse(dateText);
+        } catch (DateTimeParseException e) {
+            throw new JohnnyException(errorMessage);
+        }
     }
 }
