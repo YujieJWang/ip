@@ -57,4 +57,14 @@ public class JohnnyTest {
                 "     Nice! I've marked this task as done:",
                 "       [T][X] read book"), messages);
     }
+
+    @Test
+    public void constructor_directoryPath_displaysLoadingWarning() {
+        List<String> messages = new ArrayList<>();
+
+        new Johnny(tempDir.toString(), new Ui(messages::add));
+
+        assertEquals(List.of(
+                "     Warning: Could not load saved tasks. Starting with an empty list."), messages);
+    }
 }

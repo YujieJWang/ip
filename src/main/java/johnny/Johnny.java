@@ -39,7 +39,7 @@ public class Johnny {
         storage = new Storage(filePath);
         try {
             tasks = new TaskList(storage.load());
-        } catch (Exception e) {
+        } catch (IOException e) {
             ui.showLoadingError();
             tasks = new TaskList();
         }
