@@ -46,22 +46,22 @@ public class Storage {
             if (line.trim().isEmpty()) {
                 continue;
             }
-            String[] parts = line.split(" \\| ");
+            String[] fields = line.split(" \\| ");
             try {
-                String type = parts[0];
-                boolean isDone = parts[1].equals("1");
-                String description = parts[2];
+                String taskType = fields[0];
+                boolean isDone = fields[1].equals("1");
+                String description = fields[2];
                 Task task;
-                switch (type) {
+                switch (taskType) {
                     case "T":
                         task = new Todo(description);
                         break;
                     case "D":
-                        task = new Deadline(description, LocalDate.parse(parts[3]));
+                        task = new Deadline(description, LocalDate.parse(fields[3]));
                         break;
                     case "E":
-                        task = new Event(description, LocalDate.parse(parts[3]),
-                                LocalDate.parse(parts[4]));
+                        task = new Event(description, LocalDate.parse(fields[3]),
+                                LocalDate.parse(fields[4]));
                         break;
                     default:
                         continue;
@@ -83,9 +83,9 @@ public class Storage {
      */
     public void save(TaskList tasks) throws IOException {
         Files.createDirectories(filePath.getParent());
-        try (FileWriter fw = new FileWriter(filePath.toFile())) {
+        try (FileWriter writer = new FileWriter(filePath.toFile())) {
             for (Task task : tasks.getAll()) {
-                fw.write(task.toFileString() + System.lineSeparator());
+                writer.write(task.toFileString() + System.lineSeparator());
             }
         }
     }

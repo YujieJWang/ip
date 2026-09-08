@@ -32,8 +32,8 @@ public class Parser {
      * the first word). Returns an empty string if there are no arguments.
      */
     public static String parseArguments(String input) {
-        String[] parts = input.split(" ", 2);
-        return parts.length > 1 ? parts[1] : "";
+        String[] inputParts = input.split(" ", 2);
+        return inputParts.length > 1 ? inputParts[1] : "";
     }
 
     /**
@@ -79,21 +79,21 @@ public class Parser {
                     "Invalid deadline format. Use: deadline <description> /by <date>");
         }
         String description = arguments.substring(0, byIndex).trim();
-        String by = arguments.substring(byIndex + 5).trim();
+        String dueDateText = arguments.substring(byIndex + 5).trim();
         if (description.isEmpty()) {
             throw new JohnnyException("The description of a deadline cannot be empty.");
         }
-        if (by.isEmpty()) {
+        if (dueDateText.isEmpty()) {
             throw new JohnnyException("The deadline date cannot be empty.");
         }
-        LocalDate byDate;
+        LocalDate dueDate;
         try {
-            byDate = LocalDate.parse(by);
+            dueDate = LocalDate.parse(dueDateText);
         } catch (DateTimeParseException e) {
             throw new JohnnyException(
                     "Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
         }
-        return new Deadline(description, byDate);
+        return new Deadline(description, dueDate);
     }
 
     /**
@@ -112,31 +112,31 @@ public class Parser {
                     "Invalid event format. /from must come before /to.");
         }
         String description = arguments.substring(0, fromIndex).trim();
-        String from = arguments.substring(fromIndex + 7, toIndex).trim();
-        String to = arguments.substring(toIndex + 5).trim();
+        String startDateText = arguments.substring(fromIndex + 7, toIndex).trim();
+        String endDateText = arguments.substring(toIndex + 5).trim();
         if (description.isEmpty()) {
             throw new JohnnyException("The description of an event cannot be empty.");
         }
-        if (from.isEmpty()) {
+        if (startDateText.isEmpty()) {
             throw new JohnnyException("The start date of an event cannot be empty.");
         }
-        if (to.isEmpty()) {
+        if (endDateText.isEmpty()) {
             throw new JohnnyException("The end date of an event cannot be empty.");
         }
-        LocalDate fromDate;
-        LocalDate toDate;
+        LocalDate startDate;
+        LocalDate endDate;
         try {
-            fromDate = LocalDate.parse(from);
+            startDate = LocalDate.parse(startDateText);
         } catch (DateTimeParseException e) {
             throw new JohnnyException(
                     "Invalid start date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
         }
         try {
-            toDate = LocalDate.parse(to);
+            endDate = LocalDate.parse(endDateText);
         } catch (DateTimeParseException e) {
             throw new JohnnyException(
                     "Invalid end date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
         }
-        return new Event(description, fromDate, toDate);
+        return new Event(description, startDate, endDate);
     }
 }
