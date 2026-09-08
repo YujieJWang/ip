@@ -14,6 +14,10 @@ import johnny.task.Todo;
  */
 public class Parser {
 
+    private static final String DEADLINE_DELIMITER = " /by ";
+    private static final String EVENT_START_DELIMITER = " /from ";
+    private static final String EVENT_END_DELIMITER = " /to ";
+
     /**
      * Extracts the command keyword from the user's input.
      * Returns Command.UNKNOWN for unrecognized keywords.
@@ -73,13 +77,13 @@ public class Parser {
      * Expected format: {@code <description> /by <yyyy-MM-dd>}
      */
     public static Deadline parseDeadline(String arguments) throws JohnnyException {
-        int byIndex = arguments.indexOf(" /by ");
+        int byIndex = arguments.indexOf(DEADLINE_DELIMITER);
         if (byIndex == -1) {
             throw new JohnnyException(
                     "Invalid deadline format. Use: deadline <description> /by <date>");
         }
         String description = arguments.substring(0, byIndex).trim();
-        String dueDateText = arguments.substring(byIndex + 5).trim();
+        String dueDateText = arguments.substring(byIndex + DEADLINE_DELIMITER.length()).trim();
         if (description.isEmpty()) {
             throw new JohnnyException("The description of a deadline cannot be empty.");
         }
@@ -96,8 +100,8 @@ public class Parser {
      * Expected format: {@code <description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>}
      */
     public static Event parseEvent(String arguments) throws JohnnyException {
-        int fromIndex = arguments.indexOf(" /from ");
-        int toIndex = arguments.indexOf(" /to ");
+        int fromIndex = arguments.indexOf(EVENT_START_DELIMITER);
+        int toIndex = arguments.indexOf(EVENT_END_DELIMITER);
         if (fromIndex == -1 || toIndex == -1) {
             throw new JohnnyException(
                     "Invalid event format. Use: event <description> /from <date> /to <date>");
@@ -107,8 +111,9 @@ public class Parser {
                     "Invalid event format. /from must come before /to.");
         }
         String description = arguments.substring(0, fromIndex).trim();
-        String startDateText = arguments.substring(fromIndex + 7, toIndex).trim();
-        String endDateText = arguments.substring(toIndex + 5).trim();
+        String startDateText = arguments.substring(
+                fromIndex + EVENT_START_DELIMITER.length(), toIndex).trim();
+        String endDateText = arguments.substring(toIndex + EVENT_END_DELIMITER.length()).trim();
         if (description.isEmpty()) {
             throw new JohnnyException("The description of an event cannot be empty.");
         }
