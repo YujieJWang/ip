@@ -42,4 +42,29 @@ public class JohnnyTest {
         assertTrue(shouldExit);
         assertTrue(messages.contains("     Bye bye! See you again soon."));
     }
+
+    @Test
+    public void processCommand_mark_displaysMarkedTaskAndContinues() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        messages.clear();
+
+        boolean shouldExit = johnny.processCommand("mark 1");
+
+        assertFalse(shouldExit);
+        assertEquals(List.of(
+                "     Nice! I've marked this task as done:",
+                "       [T][X] read book"), messages);
+    }
+
+    @Test
+    public void constructor_directoryPath_displaysLoadingWarning() {
+        List<String> messages = new ArrayList<>();
+
+        new Johnny(tempDir.toString(), new Ui(messages::add));
+
+        assertEquals(List.of(
+                "     Warning: Could not load saved tasks. Starting with an empty list."), messages);
+    }
 }

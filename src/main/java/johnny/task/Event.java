@@ -12,31 +12,31 @@ public class Event extends Task {
     private static final DateTimeFormatter DISPLAY_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    private final LocalDate from;
-    private final LocalDate to;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
     /**
      * Creates an event task spanning a date range.
      *
      * @param description the task description
-     * @param from the start date
-     * @param to the end date
+     * @param startDate the start date
+     * @param endDate the end date
      */
-    public Event(String description, LocalDate from, LocalDate to) {
+    public Event(String description, LocalDate startDate, LocalDate endDate) {
         super(description);
-        this.from = from;
-        this.to = to;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     /** Returns file format: {@code E | done | description | from | to}. */
     @Override
     public String toFileString() {
-        return "E | " + super.toFileString() + " | " + from + " | " + to;
+        return "E | " + super.toFileString() + " | " + startDate + " | " + endDate;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from.format(DISPLAY_FORMAT)
-                + " to: " + to.format(DISPLAY_FORMAT) + ")";
+        return "[E]" + super.toString() + " (from: " + startDate.format(DISPLAY_FORMAT)
+                + " to: " + endDate.format(DISPLAY_FORMAT) + ")";
     }
 }

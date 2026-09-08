@@ -22,33 +22,33 @@ public class Main extends Application {
     private static final String DEFAULT_FILE_PATH = "./data/johnny.txt";
 
     private Johnny johnny;
-    private TextArea conversation;
-    private TextField input;
+    private TextArea conversationArea;
+    private TextField inputField;
 
     @Override
     public void start(Stage stage) {
-        conversation = new TextArea();
-        conversation.setEditable(false);
-        conversation.setWrapText(true);
-        conversation.setAccessibleText("Conversation with Johnny");
-        conversation.setFont(Font.font("Monospaced"));
+        conversationArea = new TextArea();
+        conversationArea.setEditable(false);
+        conversationArea.setWrapText(true);
+        conversationArea.setAccessibleText("Conversation with Johnny");
+        conversationArea.setFont(Font.font("Monospaced"));
 
-        input = new TextField();
-        input.setPromptText("Enter a command, e.g. todo read book");
-        input.setAccessibleText("Command input");
+        inputField = new TextField();
+        inputField.setPromptText("Enter a command, e.g. todo read book");
+        inputField.setAccessibleText("Command input");
 
         Button sendButton = new Button("Send");
         sendButton.setDefaultButton(true);
         sendButton.setOnAction(event -> submit());
-        input.setOnAction(event -> submit());
+        inputField.setOnAction(event -> submit());
 
-        HBox inputBar = new HBox(8, input, sendButton);
-        HBox.setHgrow(input, Priority.ALWAYS);
-        VBox root = new VBox(10, conversation, inputBar);
-        VBox.setVgrow(conversation, Priority.ALWAYS);
+        HBox inputBar = new HBox(8, inputField, sendButton);
+        HBox.setHgrow(inputField, Priority.ALWAYS);
+        VBox root = new VBox(10, conversationArea, inputBar);
+        VBox.setVgrow(conversationArea, Priority.ALWAYS);
         root.setPadding(new Insets(10));
 
-        Ui guiUi = new Ui(message -> conversation.appendText(message + System.lineSeparator()));
+        Ui guiUi = new Ui(message -> conversationArea.appendText(message + System.lineSeparator()));
         johnny = new Johnny(DEFAULT_FILE_PATH, guiUi);
         guiUi.showGreeting();
 
@@ -57,20 +57,20 @@ public class Main extends Application {
         stage.setMinWidth(420);
         stage.setMinHeight(300);
         stage.show();
-        input.requestFocus();
+        inputField.requestFocus();
     }
 
     private void submit() {
         assert johnny != null : "Johnny must be initialized before command submission";
 
-        String command = input.getText().trim();
+        String command = inputField.getText().trim();
         if (command.isEmpty()) {
             return;
         }
 
-        conversation.appendText("You: " + command + System.lineSeparator());
+        conversationArea.appendText("You: " + command + System.lineSeparator());
         boolean shouldExit = johnny.processCommand(command);
-        input.clear();
+        inputField.clear();
         if (shouldExit) {
             Platform.exit();
         }

@@ -14,6 +14,10 @@ import johnny.task.Todo;
  */
 public class Parser {
 
+    private static final String DEADLINE_DELIMITER = " /by ";
+    private static final String EVENT_START_DELIMITER = " /from ";
+    private static final String EVENT_END_DELIMITER = " /to ";
+
     /**
      * Extracts the command keyword from the user's input.
      * Returns Command.UNKNOWN for unrecognized keywords.
@@ -32,8 +36,8 @@ public class Parser {
      * the first word). Returns an empty string if there are no arguments.
      */
     public static String parseArguments(String input) {
-        String[] parts = input.split(" ", 2);
-        return parts.length > 1 ? parts[1] : "";
+        String[] inputParts = input.split(" ", 2);
+        return inputParts.length > 1 ? inputParts[1] : "";
     }
 
     /**
@@ -73,27 +77,22 @@ public class Parser {
      * Expected format: {@code <description> /by <yyyy-MM-dd>}
      */
     public static Deadline parseDeadline(String arguments) throws JohnnyException {
-        int byIndex = arguments.indexOf(" /by ");
+        int byIndex = arguments.indexOf(DEADLINE_DELIMITER);
         if (byIndex == -1) {
             throw new JohnnyException(
                     "Invalid deadline format. Use: deadline <description> /by <date>");
         }
         String description = arguments.substring(0, byIndex).trim();
-        String by = arguments.substring(byIndex + 5).trim();
+        String dueDateText = arguments.substring(byIndex + DEADLINE_DELIMITER.length()).trim();
         if (description.isEmpty()) {
             throw new JohnnyException("The description of a deadline cannot be empty.");
         }
-        if (by.isEmpty()) {
+        if (dueDateText.isEmpty()) {
             throw new JohnnyException("The deadline date cannot be empty.");
         }
-        LocalDate byDate;
-        try {
-            byDate = LocalDate.parse(by);
-        } catch (DateTimeParseException e) {
-            throw new JohnnyException(
-                    "Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
-        }
-        return new Deadline(description, byDate);
+        LocalDate dueDate = parseDate(dueDateText,
+                "Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+        return new Deadline(description, dueDate);
     }
 
     /**
@@ -101,8 +100,8 @@ public class Parser {
      * Expected format: {@code <description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>}
      */
     public static Event parseEvent(String arguments) throws JohnnyException {
-        int fromIndex = arguments.indexOf(" /from ");
-        int toIndex = arguments.indexOf(" /to ");
+        int fromIndex = arguments.indexOf(EVENT_START_DELIMITER);
+        int toIndex = arguments.indexOf(EVENT_END_DELIMITER);
         if (fromIndex == -1 || toIndex == -1) {
             throw new JohnnyException(
                     "Invalid event format. Use: event <description> /from <date> /to <date>");
@@ -112,31 +111,38 @@ public class Parser {
                     "Invalid event format. /from must come before /to.");
         }
         String description = arguments.substring(0, fromIndex).trim();
-        String from = arguments.substring(fromIndex + 7, toIndex).trim();
-        String to = arguments.substring(toIndex + 5).trim();
+        String startDateText = arguments.substring(
+                fromIndex + EVENT_START_DELIMITER.length(), toIndex).trim();
+        String endDateText = arguments.substring(toIndex + EVENT_END_DELIMITER.length()).trim();
         if (description.isEmpty()) {
             throw new JohnnyException("The description of an event cannot be empty.");
         }
-        if (from.isEmpty()) {
+        if (startDateText.isEmpty()) {
             throw new JohnnyException("The start date of an event cannot be empty.");
         }
-        if (to.isEmpty()) {
+        if (endDateText.isEmpty()) {
             throw new JohnnyException("The end date of an event cannot be empty.");
         }
-        LocalDate fromDate;
-        LocalDate toDate;
+        LocalDate startDate = parseDate(startDateText,
+                "Invalid start date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+        LocalDate endDate = parseDate(endDateText,
+                "Invalid end date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+        return new Event(description, startDate, endDate);
+    }
+
+    /**
+     * Parses an ISO date and translates formatting failures into a user-facing error.
+     *
+     * @param dateText date in {@code yyyy-MM-dd} format
+     * @param errorMessage message to show when the date is invalid
+     * @return parsed date
+     * @throws JohnnyException if the date is invalid
+     */
+    private static LocalDate parseDate(String dateText, String errorMessage) throws JohnnyException {
         try {
-            fromDate = LocalDate.parse(from);
+            return LocalDate.parse(dateText);
         } catch (DateTimeParseException e) {
-            throw new JohnnyException(
-                    "Invalid start date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
+            throw new JohnnyException(errorMessage);
         }
-        try {
-            toDate = LocalDate.parse(to);
-        } catch (DateTimeParseException e) {
-            throw new JohnnyException(
-                    "Invalid end date format. Please use yyyy-MM-dd (e.g., 2019-10-15).");
-        }
-        return new Event(description, fromDate, toDate);
     }
 }
