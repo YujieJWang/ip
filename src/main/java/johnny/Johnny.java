@@ -43,6 +43,7 @@ public class Johnny {
             ui.showLoadingError();
             tasks = new TaskList();
         }
+        assert tasks != null : "Task list must be initialized";
     }
 
     private void saveTasks() {
@@ -63,6 +64,7 @@ public class Johnny {
         try {
             Command command = Parser.parseCommand(input);
             String arguments = Parser.parseArguments(input);
+            assert command != null && arguments != null : "Parser results must not be null";
 
             switch (command) {
                 case BYE:
