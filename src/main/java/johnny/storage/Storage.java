@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,36 +47,48 @@ public class Storage {
             if (line.trim().isEmpty()) {
                 continue;
             }
-            String[] fields = line.split(" \\| ");
             try {
-                String taskType = fields[0];
-                boolean isDone = fields[1].equals("1");
-                String description = fields[2];
-                Task task;
-                switch (taskType) {
-                    case "T":
-                        task = new Todo(description);
-                        break;
-                    case "D":
-                        task = new Deadline(description, LocalDate.parse(fields[3]));
-                        break;
-                    case "E":
-                        task = new Event(description, LocalDate.parse(fields[3]),
-                                LocalDate.parse(fields[4]));
-                        break;
-                    default:
-                        continue;
-                }
-                if (isDone) {
-                    task.markAsDone();
-                }
-                tasks.add(task);
-            } catch (ArrayIndexOutOfBoundsException | java.time.format.DateTimeParseException e) {
-                // Skip corrupted lines (missing fields or unparseable dates)
+                tasks.add(parseTask(line));
+            } catch (ArrayIndexOutOfBoundsException
+                    | DateTimeParseException
+                    | IllegalArgumentException e) {
+                // Keep valid saved tasks usable even when one record is malformed.
                 continue;
             }
         }
         return tasks;
+    }
+
+    /**
+     * Parses one pipe-delimited task record from storage.
+     *
+     * @param line serialized task record
+     * @return task represented by the record
+     */
+    private Task parseTask(String line) {
+        String[] fields = line.split(" \\| ");
+        String taskType = fields[0];
+        boolean isDone = fields[1].equals("1");
+        String description = fields[2];
+        Task task;
+        switch (taskType) {
+            case "T":
+                task = new Todo(description);
+                break;
+            case "D":
+                task = new Deadline(description, LocalDate.parse(fields[3]));
+                break;
+            case "E":
+                task = new Event(description, LocalDate.parse(fields[3]),
+                        LocalDate.parse(fields[4]));
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown task type: " + taskType);
+        }
+        if (isDone) {
+            task.markAsDone();
+        }
+        return task;
     }
 
     /**
