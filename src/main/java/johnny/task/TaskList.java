@@ -1,6 +1,7 @@
 package johnny.task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Manages an ordered list of tasks with operations to add, delete,
@@ -42,13 +43,10 @@ public class TaskList {
      * The search is case-insensitive.
      */
     public ArrayList<Task> find(String keyword) {
-        ArrayList<Task> matches = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
-        for (Task task : tasks) {
-            if (task.toString().toLowerCase().contains(lowerKeyword)) {
-                matches.add(task);
-            }
-        }
+        ArrayList<Task> matches = tasks.stream()
+                .filter(task -> task.toString().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toCollection(ArrayList::new));
         assert matches.size() <= tasks.size() && tasks.containsAll(matches)
                 : "Search results must be a subset of the task list";
         return matches;
