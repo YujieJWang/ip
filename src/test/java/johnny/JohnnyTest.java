@@ -27,9 +27,9 @@ public class JohnnyTest {
 
         assertFalse(shouldExit);
         assertEquals(List.of(
-                "     Got it. I've added this task:",
+                "     Consider it noted:",
                 "       [T][ ] read book",
-                "     Now you have 1 tasks in the list."), messages);
+                "     Your agenda now has 1 task."), messages);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class JohnnyTest {
         boolean shouldExit = johnny.processCommand("bye");
 
         assertTrue(shouldExit);
-        assertTrue(messages.contains("     Bye bye! See you again soon."));
+        assertTrue(messages.contains("     Until next time. I'll keep things in order."));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class JohnnyTest {
 
         assertFalse(shouldExit);
         assertEquals(List.of(
-                "     Nice! I've marked this task as done:",
+                "     Excellent. One task completed:",
                 "       [T][X] read book"), messages);
     }
 
@@ -69,8 +69,8 @@ public class JohnnyTest {
         johnny.processCommand("list");
 
         assertEquals(List.of(
-                "     Done! I've undone the last command.",
-                "     Here are the tasks in your list:"), messages);
+                "     As you wish. The last change has been undone.",
+                "     Here is your current agenda:"), messages);
     }
 
     @Test
@@ -86,8 +86,8 @@ public class JohnnyTest {
         johnny.processCommand("list");
 
         assertEquals(List.of(
-                "     Done! I've undone the last command.",
-                "     Here are the tasks in your list:",
+                "     As you wish. The last change has been undone.",
+                "     Here is your current agenda:",
                 "     1.[T][ ] first",
                 "     2.[T][ ] second"), messages);
     }
@@ -104,8 +104,8 @@ public class JohnnyTest {
         johnny.processCommand("list");
 
         assertEquals(List.of(
-                "     Done! I've undone the last command.",
-                "     Here are the tasks in your list:",
+                "     As you wish. The last change has been undone.",
+                "     Here is your current agenda:",
                 "     1.[T][ ] read book"), messages);
     }
 
@@ -116,7 +116,18 @@ public class JohnnyTest {
 
         johnny.processCommand("undo");
 
-        assertEquals(List.of("     OOPS!!! There is no command to undo."), messages);
+        assertEquals(List.of("     I'm afraid something is amiss: There is no command to undo."), messages);
+    }
+
+    @Test
+    public void processCommand_unknownCommand_displaysButlerError() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+
+        johnny.processCommand("blah");
+
+        assertEquals(List.of(
+                "     I'm afraid something is amiss: I couldn't identify that command."), messages);
     }
 
     @Test
@@ -126,6 +137,6 @@ public class JohnnyTest {
         new Johnny(tempDir.toString(), new Ui(messages::add));
 
         assertEquals(List.of(
-                "     Warning: Could not load saved tasks. Starting with an empty list."), messages);
+                "     A note, if I may: I couldn't load your agenda, so we'll start afresh."), messages);
     }
 }

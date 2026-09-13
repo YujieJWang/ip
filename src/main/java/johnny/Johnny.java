@@ -157,7 +157,7 @@ public class Johnny {
                     undoLastCommand();
                     break;
                 default:
-                    throw new JohnnyException("I'm sorry, but I'm not too sure what that means :(");
+                    throw new JohnnyException("I couldn't identify that command.");
             }
         } catch (JohnnyException e) {
             ui.showError(e.getMessage());

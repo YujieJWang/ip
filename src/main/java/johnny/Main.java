@@ -22,9 +22,11 @@ import johnny.ui.Ui;
 public class Main extends Application {
 
     private static final String DEFAULT_FILE_PATH = "./data/johnny.txt";
-    private static final String JOHNNY_MESSAGE_STYLE = "-fx-background-color: #f1f3f5; "
+    private static final String JOHNNY_BADGE_STYLE = "-fx-background-color: #c88a2d; -fx-background-radius: 14; "
+            + "-fx-font-weight: bold; -fx-text-fill: #2f2a24;";
+    private static final String JOHNNY_MESSAGE_STYLE = "-fx-background-color: #e8dcc4; -fx-text-fill: #2f2a24; "
             + "-fx-background-radius: 8; -fx-padding: 8 10 8 10;";
-    private static final String USER_MESSAGE_STYLE = "-fx-background-color: #2563eb; -fx-text-fill: white; "
+    private static final String USER_MESSAGE_STYLE = "-fx-background-color: #264653; -fx-text-fill: white; "
             + "-fx-background-radius: 12; -fx-padding: 8 12 8 12;";
 
     private final StringBuilder responseBuffer = new StringBuilder();
@@ -37,25 +39,38 @@ public class Main extends Application {
     public void start(Stage stage) {
         messagesPane = new VBox(8);
         messagesPane.setPadding(new Insets(4));
+        messagesPane.setStyle("-fx-background-color: #f7f3e8;");
         conversationArea = new ScrollPane(messagesPane);
         conversationArea.setFitToWidth(true);
         conversationArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         conversationArea.setAccessibleText("Conversation with Johnny");
+        conversationArea.setStyle("-fx-background: #f7f3e8; -fx-border-color: transparent;");
 
         inputField = new TextField();
         inputField.setPromptText("Enter a command, e.g. todo read book");
         inputField.setAccessibleText("Command input");
+        inputField.setStyle("-fx-background-color: white; -fx-border-color: #c88a2d; "
+                + "-fx-border-radius: 6; -fx-background-radius: 6;");
 
         Button sendButton = new Button("Send");
         sendButton.setDefaultButton(true);
         sendButton.setOnAction(event -> submit());
+        sendButton.setStyle("-fx-background-color: #c88a2d; -fx-font-weight: bold; "
+                + "-fx-text-fill: #2f2a24; -fx-background-radius: 6;");
         inputField.setOnAction(event -> submit());
+
+        Label title = new Label("Johnny · At your service");
+        title.setStyle("-fx-font-family: Georgia; -fx-font-size: 18px; "
+                + "-fx-font-weight: bold; -fx-text-fill: #2f2a24;");
+        HBox header = new HBox(8, createJohnnyBadge(), title);
+        header.setAlignment(Pos.CENTER_LEFT);
 
         HBox inputBar = new HBox(8, inputField, sendButton);
         HBox.setHgrow(inputField, Priority.ALWAYS);
-        VBox root = new VBox(10, conversationArea, inputBar);
+        VBox root = new VBox(10, header, conversationArea, inputBar);
         VBox.setVgrow(conversationArea, Priority.ALWAYS);
         root.setPadding(new Insets(10));
+        root.setStyle("-fx-background-color: #f7f3e8;");
 
         Ui guiUi = new Ui(this::collectJohnnyResponse);
         johnny = new Johnny(DEFAULT_FILE_PATH, guiUi);
@@ -102,8 +117,8 @@ public class Main extends Application {
         Label message = createMessageLabel(responseBuffer.toString(), JOHNNY_MESSAGE_STYLE);
         message.setFont(Font.font("Monospaced"));
         message.setAccessibleText("Johnny: " + responseBuffer);
-        message.maxWidthProperty().bind(messagesPane.widthProperty().multiply(0.95));
-        addMessage(message, Pos.CENTER_LEFT);
+        message.maxWidthProperty().bind(messagesPane.widthProperty().multiply(0.88));
+        addMessage(message, true);
         responseBuffer.setLength(0);
     }
 
@@ -111,7 +126,7 @@ public class Main extends Application {
         Label message = createMessageLabel(command, USER_MESSAGE_STYLE);
         message.setAccessibleText("You: " + command);
         message.maxWidthProperty().bind(messagesPane.widthProperty().multiply(0.72));
-        addMessage(message, Pos.CENTER_RIGHT);
+        addMessage(message, false);
     }
 
     private Label createMessageLabel(String text, String style) {
@@ -121,9 +136,19 @@ public class Main extends Application {
         return message;
     }
 
-    private void addMessage(Label message, Pos alignment) {
-        HBox row = new HBox(message);
-        row.setAlignment(alignment);
+    private Label createJohnnyBadge() {
+        Label badge = new Label("J");
+        badge.setAlignment(Pos.CENTER);
+        badge.setMinSize(28, 28);
+        badge.setMaxSize(28, 28);
+        badge.setStyle(JOHNNY_BADGE_STYLE);
+        badge.setAccessibleText("Johnny");
+        return badge;
+    }
+
+    private void addMessage(Label message, boolean isJohnny) {
+        HBox row = isJohnny ? new HBox(8, createJohnnyBadge(), message) : new HBox(message);
+        row.setAlignment(isJohnny ? Pos.TOP_LEFT : Pos.CENTER_RIGHT);
         messagesPane.getChildren().add(row);
         Platform.runLater(() -> conversationArea.setVvalue(1.0));
     }

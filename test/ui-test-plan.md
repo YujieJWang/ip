@@ -26,11 +26,11 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -56,20 +56,20 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] read book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][ ] read book
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -96,24 +96,24 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] read book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Nice! I've marked this task as done:
+     Excellent. One task completed:
        [T][X] read book
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][X] read book
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -141,28 +141,28 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] read book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Nice! I've marked this task as done:
+     Excellent. One task completed:
        [T][X] read book
     ____________________________________________________________
     ____________________________________________________________
-     OK, I've marked this task as not done yet:
+     Very well. This task is pending again:
        [T][ ] read book
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][ ] read book
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -190,32 +190,32 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] borrow book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [D][ ] return book (by: Dec 02 2019)
-     Now you have 2 tasks in the list.
+     Your agenda now has 2 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
-     Now you have 3 tasks in the list.
+     Your agenda now has 3 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][ ] borrow book
      2.[D][ ] return book (by: Dec 02 2019)
      3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -240,14 +240,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! The description of a todo cannot be empty.
+     I'm afraid something is amiss: The description of a todo cannot be empty.
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -272,14 +272,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! I'm sorry, but I'm not too sure what that means :(
+     I'm afraid something is amiss: I couldn't identify that command.
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -307,30 +307,30 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] read book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] return book
-     Now you have 2 tasks in the list.
+     Your agenda now has 2 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Noted. I've removed this task:
+     Removed from the agenda:
        [T][ ] read book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][ ] return book
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -355,14 +355,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! Please provide a task number.
+     I'm afraid something is amiss: Please provide a task number.
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -387,14 +387,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! 'abc' is not a valid task number.
+     I'm afraid something is amiss: 'abc' is not a valid task number.
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -420,19 +420,19 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] read book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! Task number 5 is out of range. You have 1 tasks.
+     I'm afraid something is amiss: Task number 5 is out of range. You have 1 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -457,14 +457,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! Invalid deadline format. Use: deadline <description> /by <date>
+     I'm afraid something is amiss: Invalid deadline format. Use: deadline <description> /by <date>
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -489,14 +489,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! Invalid event format. Use: event <description> /from <date> /to <date>
+     I'm afraid something is amiss: Invalid event format. Use: event <description> /from <date> /to <date>
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -529,16 +529,16 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][X] read book
      2.[D][ ] homework (by: Sept 15 2024)
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -571,17 +571,17 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][X] read book
      2.[D][ ] return book (by: Dec 02 2019)
      3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -608,26 +608,26 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [D][ ] return book (by: Oct 15 2019)
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [E][ ] conference (from: Mar 01 2024 to: Mar 03 2024)
-     Now you have 2 tasks in the list.
+     Your agenda now has 2 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[D][ ] return book (by: Oct 15 2019)
      2.[E][ ] conference (from: Mar 01 2024 to: Mar 03 2024)
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -656,37 +656,37 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] read book
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] return book
-     Now you have 2 tasks in the list.
+     Your agenda now has 2 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [D][ ] borrow book (by: Sept 15 2024)
-     Now you have 3 tasks in the list.
+     Your agenda now has 3 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] buy groceries
-     Now you have 4 tasks in the list.
+     Your agenda now has 4 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the matching tasks in your list:
+     These entries match your request:
      1.[T][ ] read book
      2.[T][ ] return book
      3.[D][ ] borrow book (by: Sept 15 2024)
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -711,14 +711,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! Please provide a keyword to search for.
+     I'm afraid something is amiss: Please provide a keyword to search for.
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -743,14 +743,14 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/ 
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).
+     I'm afraid something is amiss: Invalid date format. Please use yyyy-MM-dd (e.g., 2019-10-15).
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -784,51 +784,51 @@ bye
 | |_| | (_) | | | | | | | | | | |_| |
  \___/ \___/|_| |_|_| |_|_| |_|\__, |
                                 |___/
-     Hello! I'm Johnny.
-     What can I do for you?
+     Good day. Johnny at your service.
+     How may I keep your day in order?
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! There is no command to undo.
+     I'm afraid something is amiss: There is no command to undo.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] first
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Got it. I've added this task:
+     Consider it noted:
        [T][ ] second
-     Now you have 2 tasks in the list.
+     Your agenda now has 2 tasks.
     ____________________________________________________________
     ____________________________________________________________
-     Noted. I've removed this task:
+     Removed from the agenda:
        [T][ ] first
-     Now you have 1 tasks in the list.
+     Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][ ] second
     ____________________________________________________________
     ____________________________________________________________
-     Done! I've undone the last command.
+     As you wish. The last change has been undone.
     ____________________________________________________________
     ____________________________________________________________
-     Nice! I've marked this task as done:
+     Excellent. One task completed:
        [T][X] first
     ____________________________________________________________
     ____________________________________________________________
-     Done! I've undone the last command.
+     As you wish. The last change has been undone.
     ____________________________________________________________
     ____________________________________________________________
-     Here are the tasks in your list:
+     Here is your current agenda:
      1.[T][ ] first
      2.[T][ ] second
     ____________________________________________________________
     ____________________________________________________________
-     OOPS!!! There is no command to undo.
+     I'm afraid something is amiss: There is no command to undo.
     ____________________________________________________________
     ____________________________________________________________
-     Bye bye! See you again soon.
+     Until next time. I'll keep things in order.
     ____________________________________________________________
 ```
 
@@ -847,10 +847,11 @@ bye
 4. Enter `bye` and press Enter.
 
 **Expected result:**
-- The window displays Johnny's greeting.
+- The window displays the `Johnny · At your service` header and butler-style greeting.
 - The ASCII-art banner is aligned using a monospace font.
-- Johnny's responses appear in left-aligned gray bubbles using a monospace font.
-- User commands appear in narrower, right-aligned blue bubbles without a `You:` prefix.
+- Johnny's responses appear beside a small gold `J` badge in left-aligned tan bubbles.
+- User commands appear in narrower, right-aligned navy bubbles without a `You:` prefix.
+- The window uses a warm cream background and muted-gold controls.
 - Long messages wrap within their bubbles when the window is resized.
 - Both Enter and the **Send** button submit commands.
 - The `bye` command displays the farewell and closes the window.

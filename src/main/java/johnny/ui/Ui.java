@@ -88,8 +88,8 @@ public class Ui {
     public void showGreeting() {
         showLine();
         output.accept(BANNER);
-        printIndented("Hello! I'm Johnny.",
-                "What can I do for you?");
+        printIndented("Good day. Johnny at your service.",
+                "How may I keep your day in order?");
         showLine();
     }
 
@@ -97,21 +97,21 @@ public class Ui {
      * Displays the farewell message.
      */
     public void showFarewell() {
-        printIndented("Bye bye! See you again soon.");
+        printIndented("Until next time. I'll keep things in order.");
     }
 
     /**
      * Displays the warning used when saved tasks cannot be loaded.
      */
     public void showLoadingError() {
-        printIndented("Warning: Could not load saved tasks. Starting with an empty list.");
+        printIndented("A note, if I may: I couldn't load your agenda, so we'll start afresh.");
     }
 
     /**
      * Displays the warning used when tasks cannot be saved.
      */
     public void showSaveError() {
-        printIndented("Warning: Could not save tasks to disk.");
+        printIndented("A note, if I may: I couldn't save your agenda.");
     }
 
     /**
@@ -120,7 +120,7 @@ public class Ui {
      * @param message explanation of the error.
      */
     public void showError(String message) {
-        printIndented("OOPS!!! " + message);
+        printIndented("I'm afraid something is amiss: " + message);
     }
 
     /**
@@ -131,9 +131,9 @@ public class Ui {
      */
     public void showTaskAdded(Task task, int taskCount) {
         assert taskCount > 0 : "Task count must be positive after addition";
-        printIndented("Got it. I've added this task:",
+        printIndented("Consider it noted:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                "Your agenda now has " + taskCount + (taskCount == 1 ? " task." : " tasks."));
     }
 
     /**
@@ -142,7 +142,7 @@ public class Ui {
      * @param task task that was marked.
      */
     public void showTaskMarked(Task task) {
-        printIndented("Nice! I've marked this task as done:",
+        printIndented("Excellent. One task completed:",
                 "  " + task);
     }
 
@@ -152,7 +152,7 @@ public class Ui {
      * @param task task that was unmarked.
      */
     public void showTaskUnmarked(Task task) {
-        printIndented("OK, I've marked this task as not done yet:",
+        printIndented("Very well. This task is pending again:",
                 "  " + task);
     }
 
@@ -164,14 +164,14 @@ public class Ui {
      */
     public void showTaskDeleted(Task task, int taskCount) {
         assert taskCount >= 0 : "Task count must not be negative after deletion";
-        printIndented("Noted. I've removed this task:",
+        printIndented("Removed from the agenda:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                "Your agenda now has " + taskCount + (taskCount == 1 ? " task." : " tasks."));
     }
 
     /** Displays a confirmation after the most recent task change is undone. */
     public void showCommandUndone() {
-        printIndented("Done! I've undone the last command.");
+        printIndented("As you wish. The last change has been undone.");
     }
 
     /**
@@ -180,7 +180,7 @@ public class Ui {
      * @param tasks tasks to display.
      */
     public void showTaskList(TaskList tasks) {
-        printIndented("Here are the tasks in your list:");
+        printIndented("Here is your current agenda:");
         for (int i = 0; i < tasks.size(); i++) {
             printIndented((i + 1) + "." + tasks.get(i));
         }
@@ -192,7 +192,7 @@ public class Ui {
      * @param matches matching tasks to display.
      */
     public void showFindResults(ArrayList<Task> matches) {
-        printIndented("Here are the matching tasks in your list:");
+        printIndented("These entries match your request:");
         for (int i = 0; i < matches.size(); i++) {
             printIndented((i + 1) + "." + matches.get(i));
         }
