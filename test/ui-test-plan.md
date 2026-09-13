@@ -849,6 +849,8 @@ bye
 **Expected result:**
 - The window displays Johnny's greeting.
 - The ASCII-art banner is aligned using a monospace font.
-- The added task and task list appear in the conversation area.
+- Johnny's responses appear in left-aligned gray bubbles using a monospace font.
+- User commands appear in narrower, right-aligned blue bubbles without a `You:` prefix.
+- Long messages wrap within their bubbles when the window is resized.
 - Both Enter and the **Send** button submit commands.
 - The `bye` command displays the farewell and closes the window.
