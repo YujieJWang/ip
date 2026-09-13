@@ -1,6 +1,7 @@
 package johnny.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 
@@ -109,10 +110,14 @@ public class TaskTest {
     }
 
     @Test
-    public void eventToString_sameDayEvent_showsSameDate() {
-        Event event = new Event("standup",
-                LocalDate.of(2024, 6, 15), LocalDate.of(2024, 6, 15));
-        assertEquals("[E][ ] standup (from: Jun 15 2024 to: Jun 15 2024)",
-                event.toString());
+    public void eventConstructor_sameStartAndEnd_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> new Event("standup",
+                LocalDate.of(2024, 6, 15), LocalDate.of(2024, 6, 15)));
+    }
+
+    @Test
+    public void eventConstructor_startAfterEnd_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> new Event("conference",
+                LocalDate.of(2024, 6, 16), LocalDate.of(2024, 6, 15)));
     }
 }

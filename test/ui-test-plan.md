@@ -176,7 +176,7 @@ bye
 ```
 todo borrow book
 deadline return book /by 2019-12-02
-event project meeting /from 2024-08-06 /to 2024-08-06
+event project meeting /from 2024-08-06 /to 2024-08-07
 list
 bye
 ```
@@ -205,14 +205,14 @@ bye
     ____________________________________________________________
     ____________________________________________________________
      Consider it noted:
-       [E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
+       [E][ ] project meeting (from: Aug 06 2024 to: Aug 07 2024)
      Your agenda now has 3 tasks.
     ____________________________________________________________
     ____________________________________________________________
      Here is your current agenda:
      1.[T][ ] borrow book
      2.[D][ ] return book (by: Dec 02 2019)
-     3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
+     3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 07 2024)
     ____________________________________________________________
     ____________________________________________________________
      Until next time. I'll keep things in order.
@@ -429,7 +429,7 @@ bye
      Your agenda now has 1 task.
     ____________________________________________________________
     ____________________________________________________________
-     I'm afraid something is amiss: Task number 5 is out of range. You have 1 tasks.
+     I'm afraid something is amiss: Task number 5 is out of range. You have 1 task.
     ____________________________________________________________
     ____________________________________________________________
      Until next time. I'll keep things in order.
@@ -511,6 +511,10 @@ Create `./data/johnny.txt` with the following content before running:
 ```
 T | 1 | read book
 badline
+T | yes | invalid status
+T | 0 |
+T | 0 | extra fields | unexpected
+E | 0 | reversed event | 2024-03-03 | 2024-03-01
 D | 0 | homework | 2024-09-15
 ```
 
@@ -553,7 +557,7 @@ Create `./data/johnny.txt` with the following content before running:
 ```
 T | 1 | read book
 D | 0 | return book | 2019-12-02
-E | 0 | project meeting | 2024-08-06 | 2024-08-06
+E | 0 | project meeting | 2024-08-06 | 2024-08-07
 ```
 
 **Inputs:**
@@ -578,7 +582,7 @@ bye
      Here is your current agenda:
      1.[T][X] read book
      2.[D][ ] return book (by: Dec 02 2019)
-     3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 06 2024)
+     3.[E][ ] project meeting (from: Aug 06 2024 to: Aug 07 2024)
     ____________________________________________________________
     ____________________________________________________________
      Until next time. I'll keep things in order.
@@ -826,6 +830,151 @@ bye
     ____________________________________________________________
     ____________________________________________________________
      I'm afraid something is amiss: There is no command to undo.
+    ____________________________________________________________
+    ____________________________________________________________
+     Until next time. I'll keep things in order.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Accept harmless command whitespace
+
+**Aim:** Verify leading, trailing, and repeated spaces do not prevent valid commands from working.
+
+**Inputs:**
+```
+   todo    read book
+deadline    return book    /by    2024-09-15
+event    meeting    /from    2024-09-15    /to    2024-09-16
+list
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _
+    | | ___ | |__  _ __  _ __  _   _
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/
+     Good day. Johnny at your service.
+     How may I keep your day in order?
+    ____________________________________________________________
+    ____________________________________________________________
+     Consider it noted:
+       [T][ ] read book
+     Your agenda now has 1 task.
+    ____________________________________________________________
+    ____________________________________________________________
+     Consider it noted:
+       [D][ ] return book (by: Sept 15 2024)
+     Your agenda now has 2 tasks.
+    ____________________________________________________________
+    ____________________________________________________________
+     Consider it noted:
+       [E][ ] meeting (from: Sept 15 2024 to: Sept 16 2024)
+     Your agenda now has 3 tasks.
+    ____________________________________________________________
+    ____________________________________________________________
+     Here is your current agenda:
+     1.[T][ ] read book
+     2.[D][ ] return book (by: Sept 15 2024)
+     3.[E][ ] meeting (from: Sept 15 2024 to: Sept 16 2024)
+    ____________________________________________________________
+    ____________________________________________________________
+     Until next time. I'll keep things in order.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - repeated command parameters
+
+**Aim:** Verify task commands reject parameters that are specified more than once.
+
+**Inputs:**
+```
+deadline homework /by 2024-09-15 /by 2024-09-16
+event meeting /from 2024-09-15 /from 2024-09-16 /to 2024-09-17
+event meeting /from 2024-09-15 /to 2024-09-16 /to 2024-09-17
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _
+    | | ___ | |__  _ __  _ __  _   _
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/
+     Good day. Johnny at your service.
+     How may I keep your day in order?
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The /by parameter must be specified only once.
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The /from parameter must be specified only once.
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The /to parameter must be specified only once.
+    ____________________________________________________________
+    ____________________________________________________________
+     Until next time. I'll keep things in order.
+    ____________________________________________________________
+```
+
+---
+
+### Test: Error - invalid event range and unexpected parameters
+
+**Aim:** Verify invalid event chronology and parameters on parameterless commands are rejected.
+
+**Inputs:**
+```
+event meeting /from 2024-09-15 /to 2024-09-15
+event meeting /from 2024-09-16 /to 2024-09-15
+todo wash | fold laundry
+list all
+undo now
+bye later
+bye
+```
+
+**Expected output:**
+```
+    ____________________________________________________________
+     _       _
+    | | ___ | |__  _ __  _ __  _   _
+ _  | |/ _ \| '_ \| '_ \| '_ \| | | |
+| |_| | (_) | | | | | | | | | | |_| |
+ \___/ \___/|_| |_|_| |_|_| |_|\__, |
+                                |___/
+     Good day. Johnny at your service.
+     How may I keep your day in order?
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The event start date must be before the end date.
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The event start date must be before the end date.
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: Task descriptions cannot contain the '|' character.
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The list command does not accept parameters.
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The undo command does not accept parameters.
+    ____________________________________________________________
+    ____________________________________________________________
+     I'm afraid something is amiss: The bye command does not accept parameters.
     ____________________________________________________________
     ____________________________________________________________
      Until next time. I'll keep things in order.

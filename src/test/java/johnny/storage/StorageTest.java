@@ -141,6 +141,54 @@ public class StorageTest {
         assertEquals(0, tasks.size());
     }
 
+    @Test
+    public void load_flexiblePipeSpacing_parsesCorrectly() throws IOException {
+        Path file = tempDir.resolve("tasks.txt");
+        Files.writeString(file, "  T|1|read book  \n");
+        Storage storage = new Storage(file.toString());
+
+        ArrayList<Task> tasks = storage.load();
+
+        assertEquals(1, tasks.size());
+        assertEquals("[T][X] read book", tasks.get(0).toString());
+    }
+
+    @Test
+    public void load_invalidStatus_skipsLine() throws IOException {
+        Path file = tempDir.resolve("tasks.txt");
+        Files.writeString(file, "T | yes | read book\n");
+        Storage storage = new Storage(file.toString());
+
+        assertEquals(0, storage.load().size());
+    }
+
+    @Test
+    public void load_emptyDescription_skipsLine() throws IOException {
+        Path file = tempDir.resolve("tasks.txt");
+        Files.writeString(file, "T | 0 |   \n");
+        Storage storage = new Storage(file.toString());
+
+        assertEquals(0, storage.load().size());
+    }
+
+    @Test
+    public void load_extraFields_skipsLine() throws IOException {
+        Path file = tempDir.resolve("tasks.txt");
+        Files.writeString(file, "T | 0 | read book | unexpected\n");
+        Storage storage = new Storage(file.toString());
+
+        assertEquals(0, storage.load().size());
+    }
+
+    @Test
+    public void load_invalidEventDateRange_skipsLine() throws IOException {
+        Path file = tempDir.resolve("tasks.txt");
+        Files.writeString(file, "E | 0 | meeting | 2024-03-03 | 2024-03-01\n");
+        Storage storage = new Storage(file.toString());
+
+        assertEquals(0, storage.load().size());
+    }
+
     // --- save ---
 
     @Test

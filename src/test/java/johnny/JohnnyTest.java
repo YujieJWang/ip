@@ -44,6 +44,31 @@ public class JohnnyTest {
     }
 
     @Test
+    public void processCommand_byeWithArguments_displaysErrorAndContinues() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+
+        boolean shouldExit = johnny.processCommand("bye later");
+
+        assertFalse(shouldExit);
+        assertEquals(List.of(
+                "     I'm afraid something is amiss: The bye command does not accept parameters."),
+                messages);
+    }
+
+    @Test
+    public void processCommand_listWithArguments_displaysError() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+
+        johnny.processCommand("list all");
+
+        assertEquals(List.of(
+                "     I'm afraid something is amiss: The list command does not accept parameters."),
+                messages);
+    }
+
+    @Test
     public void processCommand_mark_displaysMarkedTaskAndContinues() {
         List<String> messages = new ArrayList<>();
         Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
@@ -120,6 +145,18 @@ public class JohnnyTest {
     }
 
     @Test
+    public void processCommand_undoWithArguments_displaysParameterError() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+
+        johnny.processCommand("undo now");
+
+        assertEquals(List.of(
+                "     I'm afraid something is amiss: The undo command does not accept parameters."),
+                messages);
+    }
+
+    @Test
     public void processCommand_unknownCommand_displaysButlerError() {
         List<String> messages = new ArrayList<>();
         Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
@@ -138,5 +175,20 @@ public class JohnnyTest {
 
         assertEquals(List.of(
                 "     A note, if I may: I couldn't load your agenda, so we'll start afresh."), messages);
+    }
+
+    @Test
+    public void processCommand_storagePathIsDirectory_displaysSavingWarning() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.toString(), new Ui(messages::add));
+        messages.clear();
+
+        johnny.processCommand("todo read book");
+
+        assertEquals(List.of(
+                "     Consider it noted:",
+                "       [T][ ] read book",
+                "     Your agenda now has 1 task.",
+                "     A note, if I may: I couldn't save your agenda."), messages);
     }
 }

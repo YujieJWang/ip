@@ -113,6 +113,14 @@ public class Johnny {
         ui.showFindResults(tasks.find(keyword));
     }
 
+    /** Rejects arguments supplied to a command that has no parameters. */
+    private void rejectUnexpectedArguments(String arguments, String commandName)
+            throws JohnnyException {
+        if (!arguments.isEmpty()) {
+            throw new JohnnyException("The " + commandName + " command does not accept parameters.");
+        }
+    }
+
     /**
      * Processes one command and displays the resulting response.
      *
@@ -127,9 +135,11 @@ public class Johnny {
 
             switch (command) {
                 case BYE:
+                    rejectUnexpectedArguments(arguments, "bye");
                     ui.showFarewell();
                     return true;
                 case LIST:
+                    rejectUnexpectedArguments(arguments, "list");
                     ui.showTaskList(tasks);
                     break;
                 case MARK:
@@ -154,6 +164,7 @@ public class Johnny {
                     findTasks(arguments);
                     break;
                 case UNDO:
+                    rejectUnexpectedArguments(arguments, "undo");
                     undoLastCommand();
                     break;
                 default:

@@ -66,21 +66,34 @@ public class Storage {
      * @return task represented by the record
      */
     private Task parseTask(String line) {
-        String[] fields = line.split(" \\| ");
+        String[] fields = line.trim().split("\\s*\\|\\s*", -1);
+        if (fields.length < 3) {
+            throw new IllegalArgumentException("Task record has too few fields");
+        }
         String taskType = fields[0];
+        if (!fields[1].equals("0") && !fields[1].equals("1")) {
+            throw new IllegalArgumentException("Invalid task status: " + fields[1]);
+        }
         boolean isDone = fields[1].equals("1");
-        String description = fields[2];
+        String description = fields[2].trim();
+        if (description.isEmpty()) {
+            throw new IllegalArgumentException("Task description cannot be empty");
+        }
         Task task;
         switch (taskType) {
             case "T":
+                validateFieldCount(fields, 3);
                 task = new Todo(description);
                 break;
             case "D":
+                validateFieldCount(fields, 4);
                 task = new Deadline(description, LocalDate.parse(fields[3]));
                 break;
             case "E":
-                task = new Event(description, LocalDate.parse(fields[3]),
-                        LocalDate.parse(fields[4]));
+                validateFieldCount(fields, 5);
+                LocalDate startDate = LocalDate.parse(fields[3]);
+                LocalDate endDate = LocalDate.parse(fields[4]);
+                task = new Event(description, startDate, endDate);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown task type: " + taskType);
@@ -91,11 +104,21 @@ public class Storage {
         return task;
     }
 
+    /** Ensures a stored task record contains exactly the fields required by its type. */
+    private static void validateFieldCount(String[] fields, int expectedCount) {
+        if (fields.length != expectedCount) {
+            throw new IllegalArgumentException("Unexpected number of task fields");
+        }
+    }
+
     /**
      * Saves all tasks to the file, creating the parent directory if needed.
      */
     public void save(TaskList tasks) throws IOException {
-        Files.createDirectories(filePath.getParent());
+        Path parentDirectory = filePath.getParent();
+        if (parentDirectory != null) {
+            Files.createDirectories(parentDirectory);
+        }
         try (FileWriter writer = new FileWriter(filePath.toFile())) {
             for (Task task : tasks.getAll()) {
                 writer.write(task.toFileString() + System.lineSeparator());
