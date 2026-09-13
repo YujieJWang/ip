@@ -4,12 +4,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import johnny.ui.Ui;
 
@@ -84,6 +93,66 @@ public class JohnnyTest {
     }
 
     @Test
+    public void processCommand_unmark_displaysUnmarkedTask() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        johnny.processCommand("mark 1");
+        messages.clear();
+
+        johnny.processCommand("unmark 1");
+
+        assertEquals(List.of(
+                "     Very well. This task is pending again:",
+                "       [T][ ] read book"), messages);
+    }
+
+    @Test
+    public void processCommand_delete_displaysDeletedTaskAndPersistsRemoval() throws IOException {
+        Path file = tempDir.resolve("johnny.txt");
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(file.toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        messages.clear();
+
+        johnny.processCommand("delete 1");
+
+        assertEquals(List.of(
+                "     Removed from the agenda:",
+                "       [T][ ] read book",
+                "     Your agenda now has 0 tasks."), messages);
+        assertEquals("", Files.readString(file));
+    }
+
+    @Test
+    public void processCommand_deadlineAndEvent_addsAndPersistsTasks() throws IOException {
+        Path file = tempDir.resolve("johnny.txt");
+        Johnny johnny = new Johnny(file.toString(), new Ui(message -> { }));
+
+        johnny.processCommand("deadline return book /by 2026-09-20");
+        johnny.processCommand("event meeting /from 2026-09-21 /to 2026-09-22");
+
+        assertEquals("D | 0 | return book | 2026-09-20" + System.lineSeparator()
+                + "E | 0 | meeting | 2026-09-21 | 2026-09-22" + System.lineSeparator(),
+                Files.readString(file));
+    }
+
+    @Test
+    public void processCommand_find_displaysOnlyMatchingTasks() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        johnny.processCommand("todo buy groceries");
+        messages.clear();
+
+        johnny.processCommand("find book");
+
+        assertEquals(List.of(
+                "     These entries match your request:",
+                "     1.[T][ ] read book"), messages);
+    }
+
+    @Test
     public void processCommand_undoAddedTask_removesTask() {
         List<String> messages = new ArrayList<>();
         Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
@@ -123,6 +192,59 @@ public class JohnnyTest {
         Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
         johnny.processCommand("todo read book");
         johnny.processCommand("mark 1");
+        messages.clear();
+
+        johnny.processCommand("undo");
+        johnny.processCommand("list");
+
+        assertEquals(List.of(
+                "     As you wish. The last change has been undone.",
+                "     Here is your current agenda:",
+                "     1.[T][ ] read book"), messages);
+    }
+
+    @Test
+    public void processCommand_undoRepeatedMark_keepsPreviouslyDoneTaskDone() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        johnny.processCommand("mark 1");
+        johnny.processCommand("mark 1");
+        messages.clear();
+
+        johnny.processCommand("undo");
+        johnny.processCommand("list");
+
+        assertEquals(List.of(
+                "     As you wish. The last change has been undone.",
+                "     Here is your current agenda:",
+                "     1.[T][X] read book"), messages);
+    }
+
+    @Test
+    public void processCommand_undoUnmark_restoresPreviouslyDoneTask() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        johnny.processCommand("mark 1");
+        johnny.processCommand("unmark 1");
+        messages.clear();
+
+        johnny.processCommand("undo");
+        johnny.processCommand("list");
+
+        assertEquals(List.of(
+                "     As you wish. The last change has been undone.",
+                "     Here is your current agenda:",
+                "     1.[T][X] read book"), messages);
+    }
+
+    @Test
+    public void processCommand_undoRepeatedUnmark_keepsPreviouslyPendingTaskPending() {
+        List<String> messages = new ArrayList<>();
+        Johnny johnny = new Johnny(tempDir.resolve("johnny.txt").toString(), new Ui(messages::add));
+        johnny.processCommand("todo read book");
+        johnny.processCommand("unmark 1");
         messages.clear();
 
         johnny.processCommand("undo");
@@ -190,5 +312,29 @@ public class JohnnyTest {
                 "       [T][ ] read book",
                 "     Your agenda now has 1 task.",
                 "     A note, if I may: I couldn't save your agenda."), messages);
+    }
+
+    @Test
+    @ResourceLock(Resources.GLOBAL)
+    public void run_commandsUntilBye_processesCommandsAndIgnoresLaterInput() {
+        InputStream originalInput = System.in;
+        PrintStream originalOutput = System.out;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            System.setIn(new ByteArrayInputStream(
+                    "todo read book\nbye\ntodo ignored\n".getBytes(StandardCharsets.UTF_8)));
+            System.setOut(new PrintStream(output, true, StandardCharsets.UTF_8));
+
+            new Johnny(tempDir.resolve("johnny.txt").toString()).run();
+
+            String consoleOutput = output.toString(StandardCharsets.UTF_8);
+            assertTrue(consoleOutput.contains("Good day. Johnny at your service."));
+            assertTrue(consoleOutput.contains("[T][ ] read book"));
+            assertTrue(consoleOutput.contains("Until next time."));
+            assertFalse(consoleOutput.contains("ignored"));
+        } finally {
+            System.setIn(originalInput);
+            System.setOut(originalOutput);
+        }
     }
 }

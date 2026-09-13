@@ -1004,3 +1004,36 @@ bye
 - Long messages wrap within their bubbles when the window is resized.
 - Both Enter and the **Send** button submit commands.
 - The `bye` command displays the farewell and closes the window.
+
+---
+
+### Test: Ignore blank GUI input
+
+**Aim:** Verify blank input does not create an empty conversation entry or run a command.
+
+**Steps:**
+1. Run `./gradlew run`.
+2. Leave the command field empty and press Enter.
+3. Enter spaces only and click the **Send** button.
+
+**Expected result:**
+- No user or Johnny message is added for either submission.
+- The application remains open and responsive.
+
+---
+
+### Test: Resize and scroll through a long conversation
+
+**Aim:** Verify the conversation remains readable at the supported window-size limits.
+
+**Steps:**
+1. Run `./gradlew run`.
+2. Add several tasks with long descriptions, then enter `list`.
+3. Resize the window to its minimum width and height.
+4. Expand the window again and scroll through the conversation.
+
+**Expected result:**
+- Message text wraps within its bubble without being clipped horizontally.
+- User messages remain right-aligned and Johnny messages remain left-aligned.
+- The header, command field, and **Send** button remain visible at the minimum size.
+- The conversation automatically scrolls to each newest response and can still be scrolled manually.
